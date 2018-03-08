@@ -5,16 +5,16 @@ import { Link } from 'react-router-dom'
 class SearchMovie extends Component{
 
 //handling clicks
-  handleChange= (event)=>
+  handleMovieChange= (event)=>
   {
-    this.props.onQueryChange( event.target.value)
+    this.props.onMovieChange( event.target.value)
   }
 
   render(){
     return(
       <div>
         <div className="form-group">
-          <input type="text" className="movies_input " value={this.props.query} placeholder={this.props.placeholder} onChange={ this.handleChange} />
+          <input type="text" className="movies_input " value={this.props.query} placeholder={this.props.placeholder} onChange={ this.handleMovieChange} />
         </div>
           <Link to="/movie"><button className="btn movies_btn">Search</button></Link>
       </div>
@@ -24,16 +24,16 @@ class SearchMovie extends Component{
 
 class SearchActor extends Component{
 //handling clicks
-  handleChange= (event)=>
+  handleActorChange= (event)=>
   {
-    this.props.onQueryChange( event.target.value)
+    this.props.onActorChange( event.target.value)
   }
 
   render(){
     return(
       <div>
         <div className="form-group">
-          <input type="text" className="movies_input " value={this.props.query} placeholder={this.props.placeholder} onChange={ this.handleChange} />
+          <input type="text" className="movies_input " value={this.props.query} placeholder={this.props.placeholder} onChange={ this.handleActorChange} />
         </div>
           <Link to="/actor"><button className="btn movies_btn">Search</button></Link>
       </div>
@@ -46,7 +46,8 @@ class SideBar extends Component{
     super(props);
     this.state = {
         genres: [],
-        query : "",
+        actor : "",
+        movie:"",
         dropdown: " Genres"
     };
   }
@@ -66,10 +67,15 @@ class SideBar extends Component{
      .catch(error => console.log("There is an error with the API"))
    }
 //handling clicks
-  handleChangeQuery = (param) =>
+  handleMovieQuery = (param) =>
   {
-    this.setState({query:param});
-    this.props.ResultsQuery(param);
+    this.setState({movie:param});
+    this.props.MovieQuery(param);
+  }
+  handleActorQuery = (param) =>
+  {
+    this.setState({actor:param});
+    this.props.ActorQuery(param);
   }
 handleli = (e)=>{
   this.setState({dropdown:e.target.className})
@@ -109,13 +115,13 @@ handleli = (e)=>{
         <div className="searches">
             <SearchMovie
               placeholder={"Search movies . . ." }
-              onQueryChange= {this.handleChangeQuery}
+              onMovieChange= {this.handleMovieQuery}
                 />
         </div>
         <div className="searches">
             <SearchActor
             placeholder={"Search actor . . . "}
-              onQueryChange= {this.handleChangeQuery}
+            onActorChange= {this.handleActorQuery}
             />
         </div>
       </div>

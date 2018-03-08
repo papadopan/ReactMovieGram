@@ -12,7 +12,8 @@ class App extends Component {
       movie_id:" ",
       dropdown_name:" ",
       dropdown_id: " ",
-      query: " ",
+      actor_query: " ",
+      movie_query:" ",
       actor_name:"",
       actor_id: "",
       myMovies:[]
@@ -42,9 +43,14 @@ addmymovies = (parameter)=>{
   }
 
 //fetch the name of the actor and call the API
-update = (param) =>
+updateActor = (param) =>
 {
-  this.setState({query:param})
+  this.setState({actor_query:param})
+  this.fetchActorid(param)
+}
+updateMovie = (param) =>
+{
+  this.setState({movie_query:param})
   this.fetchActorid(param)
 }
 fetchActorid(param)
@@ -69,7 +75,8 @@ fetchActorid(param)
           <Route path="/" exact component={MainView} />
           <Route path="/results" render={(props) => (
             <ResultsView
-                                AppQuery = {this.update}
+                                MovieQuery = {this.updateMovie}
+                                ActorQuery={this.updateActor}
                                 ResultsDropDownInfo={this.AppDropDownInfo}
                                 MoveToMovie={this.movetomovie}
                                 AddMyMovies={this.addmymovies}
@@ -88,14 +95,14 @@ fetchActorid(param)
                         />
                         <Route path="/actor" render={(props) => (
                                   <ActorsView
-                                    actor = {this.state.actor_name}
+                                    actor = {this.state.actor_query}
                                     id = {this.state.actor_id}
                                   />
                               )}
                         />
                         <Route path="/movie" render={(props) => (
                           <MovieList
-                          value= {this.state.query}
+                          value= {this.state.movie_query}
                           AddMyMovies={this.addmymovies}
                           mymovies={this.state.myMovies}
                           />

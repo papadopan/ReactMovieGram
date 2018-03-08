@@ -78,9 +78,13 @@ handleImageClick = (e)=>
 }
 
 //search query
-handlefind = (param)=>
+handlemovie = (param)=>
 {
-  this.props.AppQuery(param);
+  this.props.MovieQuery(param);
+}
+handleactor = (param)=>
+{
+  this.props.ActorQuery(param);
 }
 
 //dropdown info
@@ -149,7 +153,8 @@ ButtonHandle= (e)=>
           </nav>
   <SideBar
           showing={this.state.showingSideBar}
-          ResultsQuery = {this.handlefind}
+          MovieQuery = {this.handlemovie}
+          ActorQuery = {this.handleactor}
           SideBarDropDownInfo={this.handleDropdownInfo}
         />
   <div className="wrapper">
