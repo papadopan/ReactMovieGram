@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+.movie_container{
+    display: flex;
+    min-height: 100vh;
+    flex-flow: column;
+}
+/**********************************************************************/
+.movie_header{
+    flex: 1;
+    min-height: 20vh;
+    order: 1;
+    background: #962A38;
+    display: flex;
+}
+
+.movie_poster{
+    flex: 1;
+    order: 1;
+    display: flex;
+}
+.movie_poster img {
+    max-width: 500px;
+    max-height: 500px;
+    padding: 20px;
+    margin: auto;
+}
+
+.movie_info{
+    flex: 1;
+    order: 2;
+    display: flex;
+}
+.informations{
+    margin: auto;
+    text-align: center;
+    color: whitesmoke
+}
+.informations_title{
+    font-size: 32px;
+    font-weight: bolder;
+}
+.informations_genres , .informations_date{
+    font-size: 13px;
+}
+/**********************************************************************/
+.movie_stats{
+    flex: 1;
+    order: 2;
+    min-height: 15vh;
+    background: #000000;
+    display: flex;
+}
+.movie_minutes{
+    flex: 1;
+    order: 1;
+    display: flex;
+}
+.movie_minutes > div , .movie_ranking > div , .movie_cost > div{
+    margin: auto;
+    text-align: center;
+    color: #962A38
+}
+.movie_minutes div img , .movie_ranking div img , .movie_cost div img{
+    height: 60px;
+    width: 60px;
+    margin-bottom: 5px;
+}
+.movie_ranking{
+    flex: 1;
+    order: 2;
+    display: flex;
+}
+.movie_cost{
+    flex: 1;
+    order: 3;
+    display: flex;
+}
+/**********************************************************************/
+.movie_body{
+    flex: 6;
+    order: 3;
+    min-height: 80vh;
+    background: #000000;
+    display: flex;
+    flex-flow: column;
+    color: aliceblue;
+    font-size: 14px;
+}
+.movie_description{
+    flex: 1;
+    order: 1;
+    min-height: 20vh;
+    display: flex;
+}
+.movie_description p{
+    margin: auto;
+    width: 40%;
+}
+.movie_description p:first-child:first-letter
+{
+    float:left;
+    padding-top:4px;
+    padding-right:8px;
+    padding-left:3px;
+    font-family:Georgia;
+    font-size:60px;
+    line-height:60px;
+    color:#962A38
+}
+/**********************************************************************/
+
+.recommended p {
+    font-size: 35px;
+    font-weight: bolder;
+}
+.recommended_movies{
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 20vh;
+}
+.recommended_movies > div{
+    margin: auto
+    
+}
+
+/**********************************************************************/
+.recommended{
+    margin-top: 100px;
+    flex: 2;
+    order: 2;
+    color: #962A38;
+    padding: 20px;
+}
+.overlay{
+    text-align: center;
+}
+.overlay p{
+    font-size: 20px;
+    font-family: 'Roboto'
+}
+
+/**********************************************************************/
+/* media queries*/
+@media only screen and (max-width: 1200px){
+}
+@media only screen and (max-width: 992px){
+}
+@media only screen and (max-width: 768px){
+    .movie_header{
+        flex-flow: column;
+    }
+
+}
+@media only screen and (max-width: 480px){
+}
+@media only screen and (max-width: 320px){
+}

@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import './SideBar.css';
 import logo from "../../../assets/logo1.png"
 import { Link } from 'react-router-dom'
+import TextField from 'material-ui/TextField';
+
 class SearchMovie extends Component{
 
 //handling clicks
@@ -16,7 +18,7 @@ class SearchMovie extends Component{
         <div className="form-group">
           <input type="text" className="movies_input " value={this.props.query} placeholder={this.props.placeholder} onChange={ this.handleMovieChange} />
         </div>
-          <Link to="/movie"><button className="btn movies_btn">Search</button></Link>
+          <Link to="/movies"><button className="btn movies_btn">Search</button></Link>
       </div>
     );
   }
@@ -117,6 +119,7 @@ handleli = (e)=>{
               placeholder={"Search movies . . ." }
               onMovieChange= {this.handleMovieQuery}
                 />
+
         </div>
         <div className="searches">
             <SearchActor

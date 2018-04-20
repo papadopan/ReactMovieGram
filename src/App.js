@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import {MainView, ResultsView,ActorsView, ProfileView,SearchResults,MovieList} from './components'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import {MainView, ResultsView,ActorsView, ProfileView,SearchResults,MovieList , MovieView} from './components'
+import { BrowserRouter, Route } from 'react-router-dom'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import firebase from './firebase'
 import './App.css';
 
 class App extends Component {
@@ -19,13 +21,35 @@ class App extends Component {
       myMovies:[]
     };
   }
+
+  componentDidMount()
+  {
+    const itemsRef = firebase.database().ref('movies_list')
+    itemsRef.on('value', (snapshot) => {
+    let items = snapshot.val();
+    let movies = []
+    for (let item in items)
+    {
+      movies.push(items[item])
+    }
+    this.setState({
+      myMovies: movies
+    })
+    });
+
+  }
 //add the movies to my list
 addmymovies = (parameter)=>{
   var myMovies = this.state.myMovies.slice()
   myMovies.push(parameter)
+
   this.setState({
     myMovies: myMovies
   });
+
+  const itemsRef = firebase.database().ref('movies_list');
+  itemsRef.push(parameter);
+
 }
   movetomovie= (parameter)=>
   {
@@ -70,53 +94,66 @@ fetchActorid(param)
   render()
   {
     return(
-      <BrowserRouter>
-      <div>
-          <Route path="/" exact component={MainView} />
-          <Route path="/results" render={(props) => (
-            <ResultsView
-                                MovieQuery = {this.updateMovie}
-                                ActorQuery={this.updateActor}
-                                ResultsDropDownInfo={this.AppDropDownInfo}
-                                MoveToMovie={this.movetomovie}
-                                AddMyMovies={this.addmymovies}
-                                mymovies = {this.state.myMovies}
-                                />
-                        )}
-                        />
-                        <Route path="/searchresults" render={(props) => (
-                          <SearchResults
-                                   name = {this.state.dropdown_name}
-                                   id = {this.state.dropdown_id}
-                                   AddMyMovies={this.addmymovies}
-                                   mymovies={this.state.myMovies}
-                               />
-                              )}
-                        />
-                        <Route path="/actor" render={(props) => (
-                                  <ActorsView
-                                    actor = {this.state.actor_query}
-                                    id = {this.state.actor_id}
+      <MuiThemeProvider>
+        <BrowserRouter>
+        <div>
+            <Route path="/" exact component={MainView} />
+            <Route path="/results" render={(props) => (
+              <ResultsView
+                                  MovieQuery = {this.updateMovie}
+                                  ActorQuery={this.updateActor}
+                                  ResultsDropDownInfo={this.AppDropDownInfo}
+                                  MoveToMovie={this.movetomovie}
+                                  AddMyMovies={this.addmymovies}
+                                  mymovies = {this.state.myMovies}
                                   />
-                              )}
-                        />
-                        <Route path="/movie" render={(props) => (
-                          <MovieList
-                          value= {this.state.movie_query}
-                          AddMyMovies={this.addmymovies}
-                          mymovies={this.state.myMovies}
+                          )}
                           />
-                              )}
-                        />
-                        <Route path="/profile" render={(props) => (
-                          <ProfileView
-                                movies={this.state.myMovies}
+                          <Route path="/searchresults" render={(props) => (
+                            <SearchResults
+                                    name = {this.state.dropdown_name}
+                                    id = {this.state.dropdown_id}
+                                    AddMyMovies={this.addmymovies}
+                                    mymovies={this.state.myMovies}
+                                />
+                                )}
+                          />
 
-                                  />
-                              )}
-                        />
-          </div>
-      </BrowserRouter>
+                          <Route path="/movie/:movieID" exact render={(props) => (
+                            <MovieView
+                                    name = {this.state.dropdown_name}
+                                    id = {this.state.dropdown_id}
+                                    AddMyMovies={this.addmymovies}
+                                    mymovies={this.state.myMovies}
+                                    {...props}
+                                />
+                                )}
+                          />
+
+                          <Route path="/actor" render={(props) => (
+                                    <ActorsView
+                                      actor = {this.state.actor_query}
+                                      id = {this.state.actor_id}
+                                    />
+                                )}
+                          />
+                          <Route path="/movies" render={(props) => (
+                            <MovieList
+                            value= {this.state.movie_query}
+                            AddMyMovies={this.addmymovies}
+                            mymovies={this.state.myMovies}
+                            />
+                                )}
+                          />
+                          <Route path="/profile" render={(props) => (
+                            <ProfileView
+                                  movies={this.state.myMovies}
+                                    />
+                                )}
+                          />
+            </div>
+        </BrowserRouter>
+      </MuiThemeProvider>
 
     );
   }

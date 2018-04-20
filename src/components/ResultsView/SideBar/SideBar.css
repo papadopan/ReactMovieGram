@@ -13,13 +13,13 @@
     text-align: center;
 }
 ul.dropdown-menu{
-  background: #f81f1f;
+  background: #962A38;
   color: #141414;
   cursor: pointer;
 }
 ul.dropdown-menu li a:hover{
   background-color: #141414;
-  color: #f81f1f;
+  color: #962A38;
 }
 .move{
   margin-left: 0;
@@ -32,7 +32,7 @@ ul.dropdown-menu li a:hover{
     transition: 0.3s;
 }
 .sidenavbar h3:hover , .sidenavbar i:hover{
-    color: #f81f1f;
+    color: #962A38;
 }
 .sidenavbar img{
   height: 80px;
@@ -40,7 +40,7 @@ ul.dropdown-menu li a:hover{
 }
 .movies_input{
   border: 0;
-  border-bottom: 1px solid #f81f1f;
+  border-bottom: 1px solid #962A38;
   width: 80%;
   background: transparent;
   color: #ffffff;
@@ -55,7 +55,7 @@ ul.dropdown-menu li a:hover{
 }
 .searches button{
   background: transparent;
-  border: 1px solid #f81f1f;
+  border: 1px solid #962A38;
   width: 90%;
   position: absolute;
   left: 50%;
@@ -63,7 +63,7 @@ ul.dropdown-menu li a:hover{
   letter-spacing: 2px;
 }
 .searches button:hover{
-  background: #f81f1f;
+  background: #962A38;
   color:black;
   border: 0;
 }

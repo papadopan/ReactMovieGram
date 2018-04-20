@@ -17,7 +17,7 @@
   display:flex;
   flex: 1;
   order: 2;
-  background: #f81f1f;
+  background: #962A38;
 }
 .infos{
   margin: auto;
@@ -47,7 +47,7 @@ display: flex;
   order: 4  ;
   flex: 8;
   min-height: 55vh;
-  background: #f81f1f;
+  background: #962A38;
   text-align: center;
   color: #ffffff;
   display: flex;

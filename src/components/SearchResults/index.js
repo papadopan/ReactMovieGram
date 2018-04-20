@@ -93,25 +93,6 @@ class SearchResults extends Component{
             <div className="search_header">
               <h1>{this.props.name} movies . . .</h1>
             </div>
-            <div className="container">
-              <div className="modal fade" id="myModal" role="dialog">
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                        <div className="modal-header">
-                          <button type="button" className="close" data-dismiss="modal" ><i className="fas fa-times"></i></button>
-                          <h4 classame="modal-title">{this.state.title} ({this.state.date})</h4>
-                          <p>Original language: {this.state.original_language} </p>
-                        </div>
-                            <div className="modal-body">
-                              <img  src={this.state.image_path} alt="movie"/>
-                              <p>{this.state.overview}</p>
-                            </div>
-                          <div className="modal-footer">
-                          </div>
-                  </div>
-                </div>
-              </div>
-            </div>
         </div>
 
         <div className="results_list">
@@ -124,9 +105,11 @@ class SearchResults extends Component{
                   {
                     return      <div key={movies.id} className="movie_slides" >
                                       <div className="card">
-                                      <div onClick={this.handleImageClick} data-toggle="modal" data-target="#myModal">
-                                        <img src={movies.image}  id={movies.id} alt="movie"/>
-                                        </div>
+                                      <Link to={`movie/${movies.id}`}>
+                              <div  data-toggle="modal" data-target="#myModal">
+                                <img id={movies.id} src={movies.image} alt="movie"/>
+                              </div>
+                            </Link>
                                       <div className="info">
                                         <p>{movies.title}({movies.date})</p>
                                       </div>
