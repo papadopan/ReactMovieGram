@@ -1,13 +1,13 @@
 import firebase from 'firebase'
 
 var config = {
-    apiKey: "AIzaSyBwSCm8O2bXcISEkYnSVe49qwU2AOJwLOA",
-    authDomain: "moviegram-bc401.firebaseapp.com",
-    databaseURL: "https://moviegram-bc401.firebaseio.com",
-    projectId: "moviegram-bc401",
-    storageBucket: "moviegram-bc401.appspot.com",
-    messagingSenderId: "645743201115"
-  };
+  apiKey: "AIzaSyDEu569VnoD3dDmyJAshRXk5LHYcK5RGB8",
+  authDomain: "mymovie-e370f.firebaseapp.com",
+  databaseURL: "https://mymovie-e370f.firebaseio.com",
+  projectId: "mymovie-e370f",
+  storageBucket: "",
+  messagingSenderId: "570225383226"
+};
 
   firebase.initializeApp(config);
   export default firebase;

@@ -4,7 +4,22 @@ import SideBar from "./SideBar"
 import logo from "../../assets/logo1.png"
 import loader from "../../assets/loader.gif"
 import {Link} from 'react-router-dom'
+import FontIcon from 'material-ui/FontIcon'
+import Pagination from "react-js-pagination"
 
+const styles = {
+
+  success :{
+    color:"#962A38", 
+    fontSize: "30px"
+  },
+  fail :{
+    borderColor : "#962A38",
+    color: "white", 
+    fontSize: "25px"
+  } 
+
+}
 
 class ResultsView extends Component{
   constructor(props)
@@ -23,13 +38,28 @@ class ResultsView extends Component{
       movie_details:[],
       filter: "top_rated",
       filter_name: "top rated",
-      isLoaderOn:false
+      isLoaderOn:false,
+      activePage: 1,
+      results:1,
+      pages:1
     }
   }
 
   componentDidMount(){
-    this.fetchTopRated(this.state.filter);
-    this.setState({isLoaderOn:true})
+    this.setState({isLoaderOn:true , activePage:1})
+    this.fetchInfo(this.state.filter)
+    this.fetchMovies(this.state.filter , this.state.activePage); 
+  }
+  fetchInfo(filtering)
+  {
+    fetch('https://api.themoviedb.org/3/movie/' + filtering+'?api_key=f35de773b53c4803aa0d72b2f16794f4&language=en-US&page=1')
+    .then(response => response.json())
+    .then(response => this.setState({
+        activePage : response.page,
+        totalResults: response.total_results,
+        totalPages : response.total_pages
+    }))
+    .catch("There is an error with the API")
 
   }
   fetchMovieDetails(id){
@@ -41,25 +71,30 @@ class ResultsView extends Component{
         overview:data.overview,
         original_language:data.original_language,
         image_path: "http://image.tmdb.org/t/p/w185//"+data.poster_path,
+
         isLoaderOn:false
     }))
     .catch("There is an error with the API")
 
   }
-  fetchTopRated(filtering)
+  fetchMovies(filtering , num )
   {
-    fetch('https://api.themoviedb.org/3/movie/' + filtering+'?api_key=f35de773b53c4803aa0d72b2f16794f4&language=en-US')
+    fetch('https://api.themoviedb.org/3/movie/' + filtering+'?api_key=f35de773b53c4803aa0d72b2f16794f4&language=en-US&page=' + num)
     .then(response => response.json())
     .then(data => data.results.map(movies =>(
       {
         title :`${movies.original_title}`,
         date: `${movies.release_date}`,
         image: `http://image.tmdb.org/t/p/w185//${movies.poster_path}`,
-        id: `${movies.id}`
+        id: `${movies.id}`,
+        pages : data.total_pages , 
+        results : data.total_results,
       }
     )))
     .then(data => this.setState({
       top_rated: data,
+      pages: data[0].pages,
+      results: data[0].results,
       isLoaderOn:false
     }))
     .catch("There is an error with the API")
@@ -96,7 +131,22 @@ handleDropdownInfo = (name , id)=>
 //Add movies to the list
 ButtonHandle= (e)=>
 {
-  this.props.AddMyMovies(e.target.id)
+  
+  if (this.props.mymovies.indexOf(e.target.id) > -1)
+  {
+    this.props.deleted_id(e.target.id)
+  }
+  else{
+    if(e.target.id === "" || e.target.id ===" " || e.target.id === undefined)
+    {
+
+    }
+    else{
+      this.props.AddMyMovies(e.target.id);
+    }
+    
+  }
+
 }
 
 
@@ -115,6 +165,7 @@ ButtonHandle= (e)=>
   }
   changefilter = (e)=>
   {
+    
     this.setState({filter:e.target.id})
     if(e.target.id ==="top_rated")
     {
@@ -127,10 +178,26 @@ ButtonHandle= (e)=>
     else {
       this.setState({filter_name:e.target.id})
     }
-    this.fetchTopRated(e.target.id);
+    this.fetchMovies(e.target.id , 1);
+    this.setState({activePage:1})
   }
+
+  //pagination handle
+  handlePageChange = (pageNumber) =>
+  {
+    this.setState({
+      activePage : pageNumber,
+      isLoaderOn:true
+    })
+
+    this.fetchMovies(this.state.filter , pageNumber)
+    
+  }
+
   render()
   {
+
+    
     return(
       <div className="second_screen">
 
@@ -199,13 +266,30 @@ ButtonHandle= (e)=>
                             <div className="info">
                               <p>{movies.title}({movies.date})</p>
                             </div>
-                            <button className="btn" onClick={this.ButtonHandle}  id={movies.id}>{this.props.mymovies.includes(movies.id) ? "Added!!!" : "Add"}</button>
+                            <button className="btn favorite"  onClick={this.ButtonHandle}  id={movies.id}>
+                              <FontIcon className="material-icons" style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
+                                 favorite
+                              </FontIcon>
+                            </button>
+
                             </div>
                           </div>
         }
       )
   }
 
+  </div>
+
+  <div className="pagination">
+    <div>
+        <Pagination
+          activePage={this.state.activePage}
+          itemsCountPerPage={20}
+          totalItemsCount={this.state.results}
+          pageRangeDisplayed={5}
+          onChange={this.handlePageChange}
+        />
+     </div> 
   </div>
 
 </div>

@@ -1,11 +1,11 @@
 import React , { Component } from 'react'
-import './MovieView.css';
-import lord from '../../assets/lord.jpg'
+import './MovieView.css'
 import minutes from '../../assets/circular-clock-tool.png'
 import ranking from '../../assets/star.png'
 import cost from '../../assets/dollar-symbol.png'
-import Coverflow from 'react-coverflow';
-import { StyleRoot } from 'radium';
+import Coverflow from 'react-coverflow'
+import { StyleRoot } from 'radium'
+
 
 class MovieView extends Component
 {
@@ -62,7 +62,6 @@ class MovieView extends Component
         }))
         .catch( () => console.log("error"))
     }
-
 
     render()
     {

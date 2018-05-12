@@ -1,8 +1,21 @@
 import React, {Component} from 'react'
 import './MovieList.css';
-import left from "../../assets/long-left.svg"
+import FontIcon from 'material-ui/FontIcon'
 import loader from "../../assets/loader.gif"
 import { Link } from 'react-router-dom'
+const styles = {
+
+  success :{
+    color:"#962A38", 
+    fontSize: "30px"
+  },
+  fail :{
+    borderColor : "#962A38",
+    color: "white", 
+    fontSize: "25px"
+  } 
+
+}
 
 
 class MovieList extends Component{
@@ -20,32 +33,20 @@ class MovieList extends Component{
       image_path:"",
       spoken_languages: [],
       movie_details:[],
-      isLoaderOn:false
+      isLoaderOn:false,
+      error:false
     }
   }
   componentDidMount(){
-    if(this.props.value !==" ")
-    {
+  
       this.setState({isLoaderOn:true})
       this.fetchGenreMovies();
-    }
+    
   }
-  fetchMovieDetails(id){
-    fetch('https://api.themoviedb.org/3/movie/'+id+'?api_key=f35de773b53c4803aa0d72b2f16794f4&language=en-US')
-    .then(response => response.json())
-    .then(data=> this.setState({
-        title: data.title,
-        date: data.release_date,
-        overview:data.overview,
-        original_language:data.original_language,
-        image_path: "http://image.tmdb.org/t/p/w185//" +data.poster_path,
-        isLoaderOn:false
-    }))
-    .catch("There is an error with the API")
-  }
+
   fetchGenreMovies()
   {
-    fetch('https://api.themoviedb.org/3/search/movie?api_key=f35de773b53c4803aa0d72b2f16794f4&language=en-US&query='+this.props.value )
+    fetch('https://api.themoviedb.org/3/search/movie?api_key=f35de773b53c4803aa0d72b2f16794f4&language=en-US&query='+ localStorage.getItem("movie-query") )
     .then(response => response.json())
     .then(data => data.results.map(movies =>(
       {
@@ -55,26 +56,45 @@ class MovieList extends Component{
         id: `${movies.id}`
       }
     )))
-    .then(data => this.setState({
-      top_rated: data,
-      isLoaderOn:false
-    }))
-    .catch("There is an error with the API")
+    .then(data => {
+      
+      if(data.length === 0)
+      {
+        this.setState({error:true})
+      }
+      else
+      {
+        this.setState({
+          top_rated: data,
+          isLoaderOn:false
+        })
+
+      }
+  })
+    .catch( ()=> this.setState({error:true})) 
   }
 
   //handling functions
   ButtonHandle= (e)=>
   {
-    this.props.AddMyMovies(e.target.id)
+    
+    if (this.props.mymovies.indexOf(e.target.id) > -1)
+    {
+      this.props.deleted_id(e.target.id)
+    }
+    else{
+      if(e.target.id === "" || e.target.id ===" " || e.target.id === undefined)
+      {
+  
+      }
+      else{
+        this.props.AddMyMovies(e.target.id);
+      }
+      
+    }
+  
   }
-  handleImageClick = (e)=>
-  {
-    this.setState({
-      id: e.target.id,
-      isLoaderOn:true
-    })
-    this.fetchMovieDetails(e.target.id);
-  }
+ 
   handleULClick = (event) =>
   {
     this.setState({drop:event.target.className})
@@ -82,12 +102,12 @@ class MovieList extends Component{
   render()
   {
 
-    if(this.props.value !== " ")
+    if( !this.state.error)
     {
           return(
             <div className="second_screen">
             <div className="go_back">
-              <Link to="/results"><img src={left} alt="arrow"/></Link>
+              {/* <Link to="/results"><img src={left} alt="arrow"/></Link> */}
             </div>
 
               <div className="wrapper">
@@ -96,29 +116,35 @@ class MovieList extends Component{
                   </div>
               </div>
               <div className="results_list">
-              <div className={this.state.isLoaderOn ? "loader showing" :"loader hiding"}>
-                <img src={loader} alt="loader"  />
-              </div>
+                <div className={this.state.isLoaderOn ? "loader showing" :"loader hiding"}>
+                 <img src={loader} alt="loader"  />
+                 </div>
+
                   {
-                      this.state.top_rated.map(movies =>
-                        {
-                          return      <div key={movies.id} className="movie_slides">
-                                            <div className="card">
-                                            <Link to={`movie/${movies.id}`}>
-                                               <div  data-toggle="modal" data-target="#myModal">
-                                                 <img id={movies.id} src={movies.image} alt="movie"/>
-                                              </div>
-                                            </Link>
-                                            <div className="info">
-                                              <p>{movies.title}({movies.date})</p>
-                                            </div>
-                                            <button className="btn" onClick={this.ButtonHandle}  id={movies.id}>{this.props.mymovies.includes(movies.id) ? "Added!!!" : "Add"}</button>
-                                            </div>
-                                          </div>
-                        }
-                      )
-                  }
-        </div>
+                    this.state.top_rated.map(movies =>
+                    {
+                      return      <div key={movies.id} className="movie_slides">
+                            <div className="card" >
+                            <Link to={`movie/${movies.id}`}>
+                              <div  data-toggle="modal" data-target="#myModal">
+                                <img id={movies.id} src={movies.image} alt="movie"/>
+                              </div>
+                            </Link>
+                            <div className="info">
+                              <p>{movies.title}({movies.date})</p>
+                            </div>
+                            <button className="btn favorite"  onClick={this.ButtonHandle}  id={movies.id}>
+                              <FontIcon className="material-icons" style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
+                                 favorite
+                              </FontIcon>
+                            </button>
+
+                            </div>
+                          </div>
+                      })
+                    }
+
+  </div>
       </div>
           );
       }
@@ -128,11 +154,11 @@ class MovieList extends Component{
           <div className="error_screen">
 
           <div className="back_button">
-              <Link to="/results"><img src={left} alt="arrow" /></Link>
+              {/* <Link to="/results"><img src={left} alt="arrow" /></Link> */}
           </div>
 
           <div className="error_message">
-              <h1>You search is empty </h1>
+              <h1>There is a problem with your search , please try again  </h1>
           </div>
 
           </div>

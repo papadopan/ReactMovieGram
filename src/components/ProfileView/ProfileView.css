@@ -5,110 +5,191 @@
   background: #141414;
 
 }
-.go_back{
-  order: 1;
-  flex: 1;
-  padding: 10px;
-}
-.go_back{
-  margin-bottom: 20px;
-}
-.go_back img{
-  height: 50px;
-}
 .timeline{
-  order: 2;
-  flex: 1;
+  order: 1;
+  flex: 3;
   background: #962A38;
   display: flex;
   padding: 10px;
+  flex-flow: column;
 }
-.timeline img{
-  height: 200px;
-  width: 180px;
-  border-radius: 50%;
-  border: 1px solid #141414;
-}
-.personal_infos{
-  margin: auto;
-  text-align: center;
-}
-.check_options{
-  order: 3;
-  flex:5;
-  background: #141414;
+.timeline_title
+{
+  order: 1;
+  flex: 1;
   display: flex;
 }
-.check_options > div{
+.timeline_title p{
   margin: auto;
-  padding: 10px;
+  font-family: 'Chalkboard';
+  font-size: 4em;
+  color: #141414;
 }
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
+.personal_stats{
+  flex:2;
+  order: 2;
+  display: flex;
+  margin-top: 20px;
 }
-.switch input {display:none;}
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ffffff;
-  -webkit-transition: .4s;
-  transition: .4s;
+.small
+{
+  font-size: 1em;
+}
+.big{
+  font-size: 2.5em
+}
+.watch_time{
+  order: 1;
+  flex: 1;
+  display: flex
+}
+.watch_time > div , .favourite_genre > div , .movies_count >div{
+  margin: auto;
+  text-align: center;
+  color: #141414;
+  font-weight: bolder
+}
+.favourite_genre{
+  order: 2;
+  flex: 1;
+  display: flex;
+}
+.movies_count{
+  order: 3;
+  flex: 1;
+  display: flex;
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: #141414;
-  -webkit-transition: .4s;
-  transition: .4s;
+.selection_div{
+  order: 2;
+  flex: 1;
+  display: flex;
+  color: #962A38;
 }
-input:checked + .slider {
-  background-color: #962A38;
+.selection_div > div {
+  margin: auto
 }
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+
+.tabs{
+  order: 3;
+  flex: 2;
 }
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-.slider.round {
-  border-radius: 34px;
-}
-.slider.round:before {
-  border-radius: 50%;
-}
-.stream{
-order: 4;
-flex:1;
-padding: 5px;
-text-align: center;
-color: #ffffff;
-font-weight: bolder;
-}
+
 .mymovies{
   margin: auto;
   margin-top: 100px;
   width: 100%;
-  order: 5;
+  order: 3;
   flex:6;
   display: flex;
   flex-flow: row;
   flex-wrap: wrap;
+  min-height: 30vh;
 }
-.mymovies .box{
+.box1{
   margin: auto;
+  height: 400px;
+  width: 280px;
+  border: 1px solid black;
+  position: relative;
   margin-bottom: 20px;
+}
+.box1 img{
+  height: 60%;
+  width: 100%;
+}
+.box1 button{
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  letter-spacing: 2px;
+  margin-top: 10px;
+  padding: 5px;
+  border: 1px solid #962A38;
+  background: transparent;
+  color: #962A38;
+}
+.box1 button:hover{
+  background: #962A38;
+  color: #141414
+}
+
+.stars{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+  
+}
+.tag_text{
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  color: #962A38
+}
+.tag_button{
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.trash{
+  order: 3;
+  flex: 1;
+  border-top: 1px solid #962A38;
+  height: 100px;
+  display: flex;
+}
+.trash > div{
+  margin: auto;  
+}
+.comment_boxes{
+  border: 1px solid #962A38;
+  padding: 10px;
+  border-radius: 20px;
+  text-align: center;
+  position: relative;
+  word-break: break-all;
+}
+.trash_icon{
+  position: absolute;
+  bottom: 4px;
+  right: 12px;
+  background: transparent;
+  border: 0;
+}
+.modal-footer{
+  display: flex
+}
+.modal_form{
+margin: auto
+}
+.modal_buttons{
+  margin-top: 10px;
+  left: 30%;
+  transform: translateX(-20%)
+}
+.block{
+  display: block;
+}
+.none{
+  display: none;
+}
+
+.star_icons{
+  font-size: 30px;
+}
+.add_tag_button{
+  background: transparent;
+  border: 1px solid #141414
+}
+.add_tag_button:hover{
+  background: #141414;
+  color: #962A38
+}
+.tag_list{
+  text-align: center;
+  padding: 1px;
+  letter-spacing: 3px
 }

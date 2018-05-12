@@ -116,21 +116,7 @@ ul.dropdown-menu li a:hover{
 .card .info{
   position: relative;
 }
-.card  button{
-  border: 1px solid #962A38;
-  color:#818181;
-  width: 90%;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #141414;
-  bottom: 5px;
-}
-.card  button:hover{
-  border:0;
-  background: #962A38;
-  color: black;
-}
+
 .showing{
   display: block;
 }

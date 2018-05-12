@@ -18,7 +18,9 @@ class App extends Component {
       movie_query:" ",
       actor_name:"",
       actor_id: "",
-      myMovies:[]
+      myMovies:[],
+      uids:[],
+      internet:[]
     };
   }
 
@@ -28,28 +30,66 @@ class App extends Component {
     itemsRef.on('value', (snapshot) => {
     let items = snapshot.val();
     let movies = []
+    let uids = []
+    
+    
     for (let item in items)
     {
-      movies.push(items[item])
+      movies.push(items[item].data)
+
     }
+  
+    for (let item in items)
+    {
+      uids.push(items[item].uid)
+    }
+
     this.setState({
-      myMovies: movies
+      myMovies: movies,
+      uids : uids
     })
+
     });
 
   }
+
+  
 //add the movies to my list
 addmymovies = (parameter)=>{
-  var myMovies = this.state.myMovies.slice()
-  myMovies.push(parameter)
+
+  var mymovies = this.state.myMovies.slice()
+  mymovies.push(parameter)
+  
+  
+
 
   this.setState({
-    myMovies: myMovies
+    myMovies: mymovies
   });
+  
 
-  const itemsRef = firebase.database().ref('movies_list');
-  itemsRef.push(parameter);
+  var uid = firebase.database().ref().child('movies_list').push().key
 
+
+  var data ={
+    uid : uid,
+    data : parameter,
+    category : "mymovies",
+    stars : 1,
+    comments:["Insert comments for the movie"],
+    tag : "all"
+  }
+
+  
+  this.setState({
+    uids: uid,
+  })
+
+  var updates = {}
+  updates['/movies_list/'+uid] = data
+  firebase.database().ref().update(updates)
+
+  
 }
   movetomovie= (parameter)=>
   {
@@ -70,23 +110,32 @@ addmymovies = (parameter)=>{
 updateActor = (param) =>
 {
   this.setState({actor_query:param})
-  this.fetchActorid(param)
+  this.fetchActorid( localStorage.getItem("actor-query") )
+  
 }
 updateMovie = (param) =>
 {
   this.setState({movie_query:param})
   this.fetchActorid(param)
+  // localStorage.setItem("actor-id" , this.state.actor_id)
+  // console.log(localStorage.getItem("actor-id"))
+}
+//delete movie
+delete_movie = (delete_uid) =>
+{
+
+  let uid = this.state.uids[this.state.myMovies.indexOf(delete_uid)]
+  firebase.database().ref().child('/movies_list/' + uid).remove();
+
 }
 fetchActorid(param)
 {
 
     fetch('https://api.themoviedb.org/3/search/person?api_key=f35de773b53c4803aa0d72b2f16794f4&language=en-US&query=' + param)
     .then(response => response.json())
-    .then(response=>this.setState({
-        actor_name: response.results[0].name,
-        actor_id : response.results[0].id
-      }
-    ))
+    .then(response=>{
+        localStorage.setItem("actor-id" , response.results[0].id)
+    })
     .catch(error => console.log("Problem loading data"))
 
 //Show the results from the dropdown menu
@@ -106,6 +155,8 @@ fetchActorid(param)
                                   MoveToMovie={this.movetomovie}
                                   AddMyMovies={this.addmymovies}
                                   mymovies = {this.state.myMovies}
+                                  uids = {this.state.uids}
+                                  deleted_id = {(id) => this.delete_movie(id)}
                                   />
                           )}
                           />
@@ -115,6 +166,8 @@ fetchActorid(param)
                                     id = {this.state.dropdown_id}
                                     AddMyMovies={this.addmymovies}
                                     mymovies={this.state.myMovies}
+                                    deleted_id = {(id) => this.delete_movie(id)}
+                                    uids = {this.state.uids}
                                 />
                                 )}
                           />
@@ -142,14 +195,18 @@ fetchActorid(param)
                             value= {this.state.movie_query}
                             AddMyMovies={this.addmymovies}
                             mymovies={this.state.myMovies}
+                            deleted_id = {(id) => this.delete_movie(id)}
                             />
                                 )}
                           />
                           <Route path="/profile" render={(props) => (
                             <ProfileView
                                   movies={this.state.myMovies}
-                                    />
-                                )}
+                                  mr = {this.state.internet}
+                                  deleted_id = {(id) => this.delete_movie(id)}
+                                  
+                              />
+                            )}
                           />
             </div>
         </BrowserRouter>
