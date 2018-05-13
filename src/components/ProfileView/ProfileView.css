@@ -193,3 +193,19 @@ margin: auto
   padding: 1px;
   letter-spacing: 3px
 }
+
+@media only screen and (max-width: 756px){
+  .big{
+    font-size: 2em
+  }
+}
+@media only screen and (max-width: 480px){
+  .big{
+    font-size: 1.5em
+  }
+}
+@media only screen and (max-width: 320px){
+  .big{
+    font-size: 1.3em
+  }
+}

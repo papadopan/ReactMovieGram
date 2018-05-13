@@ -1,6 +1,5 @@
 import React,{Component} from 'react'
 import './ProfileView.css'
-import antonios from "../../assets/antonios.jpg"
 import StarRatingComponent from 'react-star-rating-component'
 import FontAwesome from 'react-fontawesome'
 import firebase from '../../firebase'
@@ -278,11 +277,19 @@ handleRequestClose = () => {
 handleFilter = (tag) =>
 {
   let filtered = []
+  let time =0
 
   if ( tag === "all")
   {
     this.setState({
       internet:this.state.all_movies
+    })
+    for (let i=0 ; i< this.state.all_movies.length ; i++)
+    {
+      time += this.state.all_movies[i].time
+    }
+    this.setState({
+      time:time
     })
   }
   else
@@ -292,8 +299,15 @@ handleFilter = (tag) =>
       if( this.state.all_movies[i].tag === tag)
         filtered.push(this.state.all_movies[i])
     }
+    
+
+    for (let i=0; i< filtered.length ; i++)
+    {
+      time += filtered[i].time
+    }
     this.setState({
-      internet : filtered
+      internet : filtered,
+      time:time
     })
 
   }

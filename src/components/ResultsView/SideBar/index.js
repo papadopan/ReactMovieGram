@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import './SideBar.css';
-import logo from "../../../assets/logo1.png"
 import { Link } from 'react-router-dom'
 import TextField from 'material-ui/TextField'
 import profile from '../../../assets/user.png'

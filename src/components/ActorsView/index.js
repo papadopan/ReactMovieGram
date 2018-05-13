@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import './ActorsView.css'
 import loader from "../../assets/loader.gif"
-import { Link } from 'react-router-dom'
 
 class ActorsView extends Component{
   constructor(props)

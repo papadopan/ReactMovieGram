@@ -141,6 +141,7 @@ font-size: 32px;
   border: 1px solid lightgrey;
   position: relative;
   color: white;
+  
 }
 .card:hover{
   box-shadow: 0 32px 48px 0 rgba(0, 0, 0, 0.8);
@@ -159,6 +160,7 @@ font-size: 32px;
   bottom: 0;
   background:transparent;
   border: 0;
+
 }
 .card .wishlist{
   position: absolute;
@@ -232,4 +234,8 @@ font-size: 32px;
     width: 40px;
   }
 
+}
+.red{
+  
+  background: red;
 }

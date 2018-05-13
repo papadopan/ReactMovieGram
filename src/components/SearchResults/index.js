@@ -179,7 +179,7 @@ class SearchResults extends Component{
                               <p>{movies.title}({movies.date})</p>
                           </div>
                          <button className="btn favorite"  onClick={this.ButtonHandle}  id={movies.id}>
-                           <FontIcon className="material-icons" style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
+                           <FontIcon className="material-icons"  style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
                                favorite
                            </FontIcon>
                         </button>

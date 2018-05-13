@@ -6,6 +6,8 @@ import loader from "../../assets/loader.gif"
 import {Link} from 'react-router-dom'
 import FontIcon from 'material-ui/FontIcon'
 import Pagination from "react-js-pagination"
+import RaisedButton from 'material-ui/RaisedButton'
+import IconButton from 'material-ui/IconButton'
 
 const styles = {
 
@@ -131,7 +133,7 @@ handleDropdownInfo = (name , id)=>
 //Add movies to the list
 ButtonHandle= (e)=>
 {
-  
+  console.log(e.target.id)
   if (this.props.mymovies.indexOf(e.target.id) > -1)
   {
     this.props.deleted_id(e.target.id)
@@ -266,11 +268,34 @@ ButtonHandle= (e)=>
                             <div className="info">
                               <p>{movies.title}({movies.date})</p>
                             </div>
+
+                                <IconButton 
+                                onClick={this.ButtonHandle}  
+                                className="favourite"
+                                style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}
+                                >
+                                <FontIcon id={movies.id} className="material-icons "  color = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
+                                     favorite
+                                </FontIcon>
+                                
+                                </IconButton>
+
+                                {/* <RaisedButton
+                                  backgroundColor="transparent"
+                                  icon={ <FontIcon id={movies.id} className="material-icons" style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
+                                     favorite
+                                    </FontIcon>}    
+                                  onClick={this.ButtonHandle}  
+                                  id={movies.id}
+                                  className="favourite"
+                                  style ={this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}
+                                /> */}
+{/*                             
                             <button className="btn favorite"  onClick={this.ButtonHandle}  id={movies.id}>
                               <FontIcon className="material-icons" style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
                                  favorite
                               </FontIcon>
-                            </button>
+                            </button> */}
 
                             </div>
                           </div>

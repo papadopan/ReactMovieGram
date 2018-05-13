@@ -134,12 +134,24 @@ class MovieView extends Component
                                                     '@media (min-width: 900px)': {
                                                     width: '960px',
                                                     height: '600px'
-                                                    }
+                                                    },
+                                                    '@media (max-width: 765px)': {
+                                                        width: '550px',
+                                                        height: '500px'
+                                                    },
+                                                    '@media (max-width: 480px)': {
+                                                        width: '330px',
+                                                        height: '600px'
+                                                    },
+                                                    '@media (max-width: 320px)': {
+                                                        width: '300px',
+                                                        height: '500px'
+                                                    },
                                                 }}
                                                 >
                                                 {
                                                     this.state.recommended.map( movie=>{
-                                                        return <img key={movie.id} src ={ `http://image.tmdb.org/t/p/w185//${movie.poster_path}`}  alt={movie.title} />
+                                                        return <img key={movie.id} src ={ `http://image.tmdb.org/t/p/w185//${movie.poster_path}`}  alt="" />
                                                     })
                                                 }
                                                 </Coverflow>
