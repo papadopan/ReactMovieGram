@@ -280,23 +280,6 @@ ButtonHandle= (e)=>
                                 
                                 </IconButton>
 
-                                {/* <RaisedButton
-                                  backgroundColor="transparent"
-                                  icon={ <FontIcon id={movies.id} className="material-icons" style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
-                                     favorite
-                                    </FontIcon>}    
-                                  onClick={this.ButtonHandle}  
-                                  id={movies.id}
-                                  className="favourite"
-                                  style ={this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}
-                                /> */}
-{/*                             
-                            <button className="btn favorite"  onClick={this.ButtonHandle}  id={movies.id}>
-                              <FontIcon className="material-icons" style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
-                                 favorite
-                              </FontIcon>
-                            </button> */}
-
                             </div>
                           </div>
         }

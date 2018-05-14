@@ -11,7 +11,8 @@ import MenuItem from 'material-ui/MenuItem'
 import Divider from 'material-ui/Divider'
 import SelectField from 'material-ui/SelectField'
 import loader from "../../assets/loader.gif"
-
+import IconButton from 'material-ui/IconButton'
+import FontIcon from 'material-ui/FontIcon'
 
 
 
@@ -164,6 +165,7 @@ updateMaxElement = (element) =>
 
 onDragStart = (e) => 
 {
+  
   this.setState({
     transfer_id : e.target.id
   })
@@ -311,9 +313,11 @@ handleFilter = (tag) =>
     })
 
   }
-
-
-  
+}
+mobile_delete = (e) =>
+{
+  e.preventDefault();
+  this.props.deleted_id(e.target.id)
 }
 
   render()
@@ -342,34 +346,32 @@ handleFilter = (tag) =>
     }
     return (
       <div className="personal">
-          <div className="timeline">
-          
-          <div className="timeline_title">
-            <p>My Profile</p>
-          </div>
+          <div className="timeline">          
+              <div className="timeline_title">
+                <p>My Profile</p>
+              </div>
 
-          <div className="personal_stats">
-            <div className="watch_time">
-              <div>
-                <p className="small">watch time</p>
-                <p className="big">{this.state.time} min</p>
+              <div className="personal_stats">
+                <div className="watch_time">
+                <div>
+                    <p className="small">favourite genre</p>
+                    <p className="big">{this.state.internet.length === 0 ? "wait to add" : this.state.max_element}</p>
+                  </div>
+                </div>
+                <div className="favourite_genre">
+                <div>
+                    <p className="small">watch time</p>
+                    <p className="big">{this.state.time} min</p>
+                  </div>
+                </div>
+                <div className="movies_count">
+                  <div>
+                    <p className="small">movies</p>
+                    <p className="big">#{this.state.internet.length}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="favourite_genre">
-             <div>
-                <p className="small">favourite genre</p>
-                <p className="big">{this.state.internet.length === 0 ? "wait to add" : this.state.max_element}</p>
-              </div>
-            </div>
-            <div className="movies_count">
-              <div>
-                <p className="small">movies</p>
-                <p className="big">#{this.state.internet.length}</p>
-              </div>
-            </div>
-          </div>
 
-            
           </div>
           <div className="selection_div">
             <div>
@@ -435,6 +437,16 @@ handleFilter = (tag) =>
                                               <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id={movie.firebase_id} title={movie.title} onClick={(e) =>this.addComments(e , movie.comments)}>Comments</button>
                                             </div>
                                             <p className="tag_text">tag: {movie.tag}</p>
+                                            <div className="delete_movie">
+                                              <IconButton 
+                                              onClick={(e)=>this.mobile_delete(e)} 
+                                              >
+                                                <FontIcon id={movie.id}color="#962A38" className="material-icons ">
+                                                    delete
+                                                </FontIcon>
+                                                
+                                              </IconButton>
+                                               </div>
                                             <div className="tag_button">
                                                 <RaisedButton
                                                     id={movie.title}
@@ -516,18 +528,27 @@ handleFilter = (tag) =>
                 </div>
                 <div className="modal-body">
                 {
-                
                   this.state.modal_comments.map( (comment , index)=>
                   {
-                    return <div key={index} className="comment_boxes">
-                             <p>{comment}</p>
-                             <button  className={index === 0 ? " none " : " trash_icon block  "} id={index} onClick={(e) => this.commentTrash(e)}>
+                    return <div className={index === 0   ? " none " : "comment_boxes block"} key={index} >
+                             <p >{comment}</p>
+                             <div className="trash_icon">
+                               <IconButton 
+                                 onClick={(e)=>this.commentTrash(e)} 
+                                 id={index}
+                                 >
+                                    <FontIcon id={index} color="#962A38" className="material-icons ">
+                                        delete
+                                    </FontIcon>                    
+                                 </IconButton>
+                              </div>
+                             {/* <button  className={index === 0 ? " none " : " trash_icon block  "} id={index} onClick={(e) => this.commentTrash(e)}>
                                 <FontAwesome
                                     className="far fa-trash-alt"
                                     name="comment_trash"
                                     id={index} 
                                   />
-                             </button>
+                             </button> */}
                             </div>
                   })
                 }

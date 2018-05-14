@@ -120,6 +120,13 @@ display: flex;
 .error_message h1{
   margin: auto;
 }
+.back_button{
+  padding: 10px;
+  display: flex;
+}
+.back_button > div{
+  margin: auto;
+}
 /*media queries*/
 @media only screen and (max-width: 1200px){
 }

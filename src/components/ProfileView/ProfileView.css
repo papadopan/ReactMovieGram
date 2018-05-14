@@ -33,7 +33,8 @@
 }
 .small
 {
-  font-size: 1em;
+  font-size: 1.5em;
+  font-weight: bolder;
 }
 .big{
   font-size: 2.5em
@@ -73,6 +74,9 @@
 .tabs{
   order: 3;
   flex: 2;
+  margin-left: 150px;
+  margin-right: 150px;
+  
 }
 
 .mymovies{
@@ -89,10 +93,11 @@
 .box1{
   margin: auto;
   height: 400px;
-  width: 280px;
+  width: 230px;
   border: 1px solid black;
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 100px; 
+  margin-right: 20px
 }
 .box1 img{
   height: 60%;
@@ -133,6 +138,13 @@
   bottom: 5px;
   right: 5px;
 }
+.delete_movie{
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+}
 
 .trash{
   order: 3;
@@ -140,6 +152,7 @@
   border-top: 1px solid #962A38;
   height: 100px;
   display: flex;
+  margin-top: 20px;
 }
 .trash > div{
   margin: auto;  
@@ -194,18 +207,63 @@ margin: auto
   letter-spacing: 3px
 }
 
+@media only screen and (max-width: 992px){
+  .delete_movie{
+    display: block
+  }
+  .tabs{
+    margin-right:100px;
+    margin-left: 100px 
+  }
+}
 @media only screen and (max-width: 756px){
   .big{
     font-size: 2em
   }
+
+  .tabs{
+    margin-right:50px;
+    margin-left: 50px 
+  }
+  .box1{
+    margin: auto;
+    width: 240px;
+    margin-bottom:100px 
+  }
+
 }
 @media only screen and (max-width: 480px){
   .big{
-    font-size: 1.5em
+    font-size: 1.2em
+  }
+  .small{
+    font-size: .8em;
+  }
+  .tabs{
+    margin-right:0px;
+    margin-left: 0px 
+  }
+
+  .box1{
+    margin: auto;
+    width: 240px;
+    margin-bottom:100px 
   }
 }
 @media only screen and (max-width: 320px){
   .big{
     font-size: 1.3em
+  }
+  .small{
+    font-size: .85em
+  }
+  .tabs{
+    margin-right:100px;
+    margin-left: 100px 
+  }
+  .box1{
+   margin: auto;
+  width: 280px;
+  margin-bottom:100px 
   }
 }

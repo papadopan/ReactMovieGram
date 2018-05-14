@@ -3,6 +3,9 @@ import './MovieList.css';
 import FontIcon from 'material-ui/FontIcon'
 import loader from "../../assets/loader.gif"
 import { Link } from 'react-router-dom'
+import IconButton from 'material-ui/IconButton'
+import image from '../../assets/logo3.png'
+
 const styles = {
 
   success :{
@@ -107,11 +110,12 @@ class MovieList extends Component{
           return(
             <div className="second_screen">
             <div className="go_back">
-              {/* <Link to="/results"><img src={left} alt="arrow"/></Link> */}
+              {/* <Link to="/results"><img src={image} alt="arrow"/></Link> */}
             </div>
 
               <div className="wrapper">
                   <div className="search_header">
+                  <Link to="/results"><img src={image} className="home_image" alt="arrow"/></Link>
                     <h1>movies about . . . {this.props.value}</h1>
                   </div>
               </div>
@@ -133,11 +137,16 @@ class MovieList extends Component{
                             <div className="info">
                               <p>{movies.title}({movies.date})</p>
                             </div>
-                            <button className="btn favorite"  onClick={this.ButtonHandle}  id={movies.id}>
-                              <FontIcon className="material-icons" style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
+                            <IconButton 
+                            onClick={this.ButtonHandle}  
+                            className="favourite"
+                            style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}
+                             >
+                            <FontIcon id={movies.id} className="material-icons "  color = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
                                  favorite
-                              </FontIcon>
-                            </button>
+                            </FontIcon>
+                                
+                           </IconButton>
 
                             </div>
                           </div>

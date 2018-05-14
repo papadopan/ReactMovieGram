@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import './ActorsView.css'
 import loader from "../../assets/loader.gif"
+import image from '../../assets/logo3.png'
+import { Link } from 'react-router-dom'
 
 class ActorsView extends Component{
   constructor(props)
@@ -73,7 +75,11 @@ class ActorsView extends Component{
     {
       return(
         <div className="profile">
-
+             <div className="back_button">
+               <div>
+               <Link to="/results"><img src={image} className="home_image" alt="arrow"/></Link>
+              </div>
+            </div>
             <div className="profile_info">
               <div className="infos">
                 <img src={this.state.profile} alt="actor "/>
@@ -120,7 +126,7 @@ class ActorsView extends Component{
       return(
         <div className="error_screen">
         <div className="back_button">
-            {/* <Link to="/results"><img src={left} alt="arrow" /></Link> */}
+            <Link to="/results"><img src={image} alt="arrow" /></Link>
         </div>
         <div className="error_message">
             <h1>There is a problem with your search , please try again </h1>

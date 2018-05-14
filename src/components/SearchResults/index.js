@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 import loader from "../../assets/loader.gif"
 import FontIcon from 'material-ui/FontIcon'
 import Pagination from "react-js-pagination"
+import IconButton from 'material-ui/IconButton'
+import image from '../../assets/logo3.png'
+
 
 
 const styles = {
@@ -156,6 +159,7 @@ class SearchResults extends Component{
       <div className="second_screen">
         <div className="wrapper">
             <div className="search_header">
+              <Link to="/results"><img src={image} className="home_image" alt="arrow"/></Link>
               <h1>{this.state.name} movies . . .</h1>
             </div>
         </div>
@@ -178,12 +182,17 @@ class SearchResults extends Component{
                           <div className="info">
                               <p>{movies.title}({movies.date})</p>
                           </div>
-                         <button className="btn favorite"  onClick={this.ButtonHandle}  id={movies.id}>
-                           <FontIcon className="material-icons"  style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
-                               favorite
-                           </FontIcon>
-                        </button>
 
+                           <IconButton 
+                            onClick={this.ButtonHandle}  
+                            className="favourite"
+                            style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}
+                             >
+                            <FontIcon id={movies.id} className="material-icons "  color = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
+                                 favorite
+                            </FontIcon>
+                                
+                           </IconButton>
                      </div>
                    </div>
         }

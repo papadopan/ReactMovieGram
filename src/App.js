@@ -76,7 +76,7 @@ addmymovies = (parameter)=>{
     data : parameter,
     category : "mymovies",
     stars : 1,
-    comments:["Insert comments for the movie"],
+    comments:[""],
     tag : "all"
   }
 
