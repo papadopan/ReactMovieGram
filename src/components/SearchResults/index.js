@@ -40,7 +40,8 @@ class SearchResults extends Component{
       isLoaderOn:false, 
       activePage:1,
       results:1,
-      pages:1
+      pages:1,
+      error:false
     }
   }
 
@@ -75,7 +76,7 @@ class SearchResults extends Component{
         image_path: "http://image.tmdb.org/t/p/w185//" +data.poster_path,
         isLoaderOn:false
     }))
-    .catch("There is an error with the API")
+    .catch(()=> this.setState({error:true}))
 
   }
   fetchGenreMovies(num)
@@ -102,7 +103,7 @@ class SearchResults extends Component{
 
   })
 
-    .catch("There is an error with the API")
+    .catch( () => this.setState({error:true}))
 
   }
   handleImageClick = (e)=>
@@ -155,70 +156,86 @@ class SearchResults extends Component{
   render()
   {
 
-    return(
-      <div className="second_screen">
-        <div className="wrapper">
-            <div className="search_header">
-              <Link to="/results"><img src={image} className="home_image" alt="arrow"/></Link>
-              <h1>{this.state.name} movies . . .</h1>
+      if (!this.state.error)
+      {
+        return(
+          <div className="second_screen">
+            <div className="wrapper">
+                <div className="search_header">
+                  <Link to="/results"><img src={image} className="home_image" alt="arrow"/></Link>
+                  <h1>{this.state.name} movies . . .</h1>
+                </div>
             </div>
-        </div>
 
-        <div className="results_list">
-        <div className={this.state.isLoaderOn ? "loader showing" :"loader hiding"}>
-          <img src={loader} alt="loader"  />
-        </div>
+            <div className="results_list">
+            <div className={this.state.isLoaderOn ? "loader showing" :"loader hiding"}>
+              <img src={loader} alt="loader"  />
+            </div>
 
-  {
-      this.state.top_rated.map(movies =>
-        {
-          return      <div key={movies.id} className="movie_slides">
-                         <div className="card" >
-                         <Link to={`movie/${movies.id}`}>
-                           <div  data-toggle="modal" data-target="#myModal">
-                             <img id={movies.id} src={movies.image} alt="movie"/>
-                           </div>
-                         </Link>
+      {
+          this.state.top_rated.map(movies =>
+            {
+              return   <div key={movies.id} className="movie_slides">
+                        <div className="card" >
+                          <Link to={`movie/${movies.id}`}>
+                            <div  data-toggle="modal" data-target="#myModal">
+                              <img id={movies.id} src={movies.image} alt="movie"/>
+                            </div>
+                          </Link>
                           <div className="info">
-                              <p>{movies.title}({movies.date})</p>
+                            <p>{movies.title}({movies.date})</p>
                           </div>
-
-                           <IconButton 
+                          <IconButton 
                             onClick={this.ButtonHandle}  
                             className="favourite"
                             style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}
-                             >
+                          >
                             <FontIcon id={movies.id} className="material-icons "  color = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
-                                 favorite
-                            </FontIcon>
-                                
-                           </IconButton>
-                     </div>
-                   </div>
-        }
-      )
-  }
+                              favorite
+                            </FontIcon>        
+                          </IconButton>
+                        </div>
+                      </div>
+            }
+          )
+      }
 
-  </div>
+      </div>
 
-  <div className="pagination">
-    <div>
-        <Pagination
-          activePage={this.state.activePage}
-          itemsCountPerPage={888}
-          totalItemsCount={this.state.results}
-          pageRangeDisplayed={5}
-          onChange={this.handlePageChange}
-        />
-      
-     </div> 
-  </div>
-
-
-</div>
+      <div className="pagination">
+        <div>
+            <Pagination
+              activePage={this.state.activePage}
+              itemsCountPerPage={888}
+              totalItemsCount={this.state.results}
+              pageRangeDisplayed={5}
+              onChange={this.handlePageChange}
+            />
+          
+        </div> 
+      </div>
 
 
-    );
+    </div>
+
+
+        );
+    }
+    else
+    {
+      return(
+        <div className="error_screen">
+          <div className="back_button">
+            <div>
+                <Link to="/results"><img src={image} alt="arrow" /></Link>
+            </div>
+          </div>
+          <div className="error_message">
+              <h1>There is a problem with your search , please try again </h1>
+          </div>
+        </div>
+      );
+    }
   }
 }
 

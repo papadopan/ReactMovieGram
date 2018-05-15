@@ -30,6 +30,7 @@ class ActorsView extends Component{
     console.log(localStorage.getItem("actor-query"))
   }
 
+  //fetch known movies for the actor that the user searched for
   fetchKnownMovies()
   {
       fetch('https://api.themoviedb.org/3/search/person?api_key=f35de773b53c4803aa0d72b2f16794f4&language=en-US&query=' + localStorage.getItem("actor-query"))
@@ -47,7 +48,7 @@ class ActorsView extends Component{
       }))
       .catch(()=> this.setState({error:true}))
   }
-
+  //fetch actor data based on the actor's id
   fetchActorsData()
   {
       fetch('https://api.themoviedb.org/3/person/'+ localStorage.getItem("actor-id")+'?api_key=f35de773b53c4803aa0d72b2f16794f4&language=en-US')
@@ -68,6 +69,10 @@ class ActorsView extends Component{
        })
       .catch(()=> this.setState({error:true}))
   }
+
+  // in the render method it will check if there is an error, if there is then a static screen will be displayed with the proper message
+  //otherwise the screen will display the information in the proper way 
+  // When an error will occur : a) if there is a network problem with the fetching data from API b) if the user's query has no results
 
   render()
   {
@@ -126,7 +131,9 @@ class ActorsView extends Component{
       return(
         <div className="error_screen">
         <div className="back_button">
+          <div>
             <Link to="/results"><img src={image} alt="arrow" /></Link>
+          </div>
         </div>
         <div className="error_message">
             <h1>There is a problem with your search , please try again </h1>

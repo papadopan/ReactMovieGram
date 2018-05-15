@@ -24,6 +24,7 @@ class App extends Component {
     };
   }
 
+  //every time that the app is re-rendered this function is executed
   componentDidMount()
   {
     const itemsRef = firebase.database().ref('movies_list')
@@ -54,43 +55,43 @@ class App extends Component {
   }
 
   
-//add the movies to my list
-addmymovies = (parameter)=>{
+  //add the movies to my list
+  addmymovies = (parameter)=>{
 
-  var mymovies = this.state.myMovies.slice()
-  mymovies.push(parameter)
-  
-  
-
-
-  this.setState({
-    myMovies: mymovies
-  });
-  
-
-  var uid = firebase.database().ref().child('movies_list').push().key
+    var mymovies = this.state.myMovies.slice()
+    mymovies.push(parameter)
+    
+    
 
 
-  var data ={
-    uid : uid,
-    data : parameter,
-    category : "mymovies",
-    stars : 1,
-    comments:[""],
-    tag : "all"
+    this.setState({
+      myMovies: mymovies
+    });
+    
+
+    var uid = firebase.database().ref().child('movies_list').push().key
+
+
+    var data ={
+      uid : uid,
+      data : parameter,
+      category : "mymovies",
+      stars : 1,
+      comments:[""],
+      tag : "all"
+    }
+
+    
+    this.setState({
+      uids: uid,
+    })
+
+    var updates = {}
+    updates['/movies_list/'+uid] = data
+    firebase.database().ref().update(updates)
+
+    
   }
-
-  
-  this.setState({
-    uids: uid,
-  })
-
-  var updates = {}
-  updates['/movies_list/'+uid] = data
-  firebase.database().ref().update(updates)
-
-  
-}
   movetomovie= (parameter)=>
   {
     this.setState={
@@ -107,6 +108,7 @@ addmymovies = (parameter)=>{
   }
 
 //fetch the name of the actor and call the API
+//save the name of the actor to the local storage
 updateActor = (param) =>
 {
   this.setState({actor_query:param})
@@ -120,7 +122,7 @@ updateMovie = (param) =>
   // localStorage.setItem("actor-id" , this.state.actor_id)
   // console.log(localStorage.getItem("actor-id"))
 }
-//delete movie
+//delete movie from database
 delete_movie = (delete_uid) =>
 {
 
@@ -128,6 +130,7 @@ delete_movie = (delete_uid) =>
   firebase.database().ref().child('/movies_list/' + uid).remove();
 
 }
+//fetch id for the actor that the user searched for 
 fetchActorid(param)
 {
 

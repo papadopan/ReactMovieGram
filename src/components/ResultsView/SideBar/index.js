@@ -112,13 +112,9 @@ class SideBar extends Component{
   }
   handleActorQuery = (param) =>
   {
-   
-  
-      this.setState({actor:param});
-      this.props.ActorQuery(param);
-      localStorage.setItem("actor-query" , param)
-    
-
+    this.setState({actor:param});
+    this.props.ActorQuery(param);
+    localStorage.setItem("actor-query" , param)
   }
 handleli = (e)=>{
   this.setState({dropdown:e.target.className})
@@ -147,11 +143,11 @@ handleli = (e)=>{
               <span className="caret profile_text"></span>
             </button>
             <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        {
-                            this.state.genres.map(movie=>{
-                              return <li key = {movie.name}  onClick={this.handleli}> <Link to="/searchresults" className ={movie.name} id={movie.id}>{movie.name}</Link> </li>
-                            })
-                }
+              {
+                this.state.genres.map(movie=>{
+                  return <li key = {movie.name}  onClick={this.handleli}> <Link to="/searchresults" className ={movie.name} id={movie.id}>{movie.name}</Link> </li>
+                   })
+              }
             </ul>
             </div>
           </div>

@@ -3,6 +3,8 @@ import logo from "../../assets/logo1.png"
 import { Link } from 'react-router-dom'
 import './MainView.css';
 class MainView extends Component{
+  // this is the first screen that the user will see
+  //there is only one button that leads to the main application
   render()
   {
     return(

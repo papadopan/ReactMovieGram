@@ -13,6 +13,8 @@ import SelectField from 'material-ui/SelectField'
 import loader from "../../assets/loader.gif"
 import IconButton from 'material-ui/IconButton'
 import FontIcon from 'material-ui/FontIcon'
+import image from '../../assets/logo3.png'
+import { Link } from 'react-router-dom'
 
 
 
@@ -30,8 +32,8 @@ class ProfileView extends Component{
       modal_comments:[],
       open:false,
       genres:[],
-      all_movies_genres:[]
-      
+      all_movies_genres:[],
+      error:false
     }
   }
   
@@ -111,8 +113,9 @@ componentDidMount(){
                     })
 
                     this.updategenre()
+                    this.setState({isLoaderOn:false})
                   })
-                  .catch(error=> console.log("error"))
+                  .catch(()=> this.setState({error:true}))
                 })
 
     
@@ -122,7 +125,9 @@ componentDidMount(){
 
     
 }
-
+//every time that a movie is added or removed 
+//there is a check of the most popular movie genre into the user profile in order to decide which is his favourite one 
+// all the movies have more than one genre
 updategenre = () =>
 {
   var all_genres = []
@@ -156,13 +161,16 @@ updategenre = () =>
 this.updateMaxElement(max_element)
 
 }
+//saving in the state the most popular genre
 updateMaxElement = (element) =>
 {
   this.setState({
     max_element : element
   })
 }
-
+//when the drag of the movie starts 
+//it saved in the state the id of the movie 
+//in order to delete when the user is going to drop the movie
 onDragStart = (e) => 
 {
   
@@ -175,17 +183,21 @@ onDragOver = (e) =>
 {
     e.preventDefault();
 }
+//when the movie is dropped to this specific area
+//it passes the id of the movie to the App.js and then deletes the movie from the profile
 onDrop = (e) =>
 {
   e.preventDefault();
   this.props.deleted_id(this.state.transfer_id)
+  this.setState({isLoaderOn:true})
   
 }
-
+//updates the star rating of the movie
 onStarClick(nextValue, prevValue, name) 
 {
   firebase.database().ref('movies_list/'+ name).update({stars : nextValue})
 }
+//add comments to the movie, this button opens the modal window
 addComments = (e , comments) =>
 {
   this.setState({
@@ -194,14 +206,15 @@ addComments = (e , comments) =>
     modal_title: e.target.title
   })
   
-
 }
+//saves the comment input in the state
 handleCommentInput = (e)=>
 {
   this.setState({
     new_comment : e.target.value
   })
 }
+//saves the comment for the movie
 saveComment = () =>
 {
   if(this.state.new_comment === "" || this.state.new_comment=== " ")
@@ -216,6 +229,7 @@ saveComment = () =>
     firebase.database().ref('movies_list/'+ this.state.modal_id).update({comments : new_comments})
   }
 }
+//deletes the comment
 commentTrash = (e)=>
 {
   var com = this.state.modal_comments.slice()
@@ -232,15 +246,14 @@ commentTrash = (e)=>
 
   firebase.database().ref('movies_list/'+ this.state.modal_id).update({comments : com})
 }
+//saves in the state the tag input from the user
 handleTagInput = (e)=>
 {
-  
   this.setState({
     new_tag : e.target.value
   })
-
-
 }
+// saves and updates the tag of the movie
 handleTagClick = (e) =>
 {
   e.preventDefault();
@@ -249,7 +262,7 @@ handleTagClick = (e) =>
   })
   firebase.database().ref('movies_list/'+ this.state.tag_movie).update({tag : this.state.new_tag})  
 }
-
+//opens the popover menu for the tags 
 handleClick = (event , id) => {
   // This prevents ghost click.
   event.preventDefault();
@@ -261,7 +274,7 @@ handleClick = (event , id) => {
   })
   
 };
-
+//handles the click from the user when they want to add a new tag in the movie
 handleListTag =(name) =>
 {
   this.setState({
@@ -270,12 +283,13 @@ handleListTag =(name) =>
   firebase.database().ref('movies_list/'+ this.state.tag_movie).update({tag : name})  
 
 }
-
+//close the popover window
 handleRequestClose = () => {
   this.setState({
     open: false,
   });
 };
+//filters the movies based on the tags
 handleFilter = (tag) =>
 {
   let filtered = []
@@ -314,10 +328,13 @@ handleFilter = (tag) =>
 
   }
 }
+//there is a delete button for the mobile version in order to delete movies
+//because drag and drop is not possible with touch screens
 mobile_delete = (e) =>
 {
   e.preventDefault();
   this.props.deleted_id(e.target.id)
+  this.setState({isLoaderOn:true})
 }
 
   render()
@@ -344,237 +361,243 @@ mobile_delete = (e) =>
         textAlign: "center"
       }
     }
-    return (
-      <div className="personal">
-          <div className="timeline">          
-              <div className="timeline_title">
-                <p>My Profile</p>
-              </div>
 
-              <div className="personal_stats">
-                <div className="watch_time">
-                <div>
-                    <p className="small">favourite genre</p>
-                    <p className="big">{this.state.internet.length === 0 ? "wait to add" : this.state.max_element}</p>
-                  </div>
+    if( !this.state.error)
+    {
+      return (
+        <div className="personal">
+            <div className="timeline">          
+                <div className="timeline_title">
+                  <p>My Profile</p>
                 </div>
-                <div className="favourite_genre">
-                <div>
-                    <p className="small">watch time</p>
-                    <p className="big">{this.state.time} min</p>
-                  </div>
-                </div>
-                <div className="movies_count">
+  
+                <div className="personal_stats">
+                  <div className="watch_time">
                   <div>
-                    <p className="small">movies</p>
-                    <p className="big">#{this.state.internet.length}</p>
+                      <p className="small">favourite genre</p>
+                      <p className="big">{this.state.internet.length === 0 ? "wait to add" : this.state.max_element}</p>
+                    </div>
+                  </div>
+                  <div className="favourite_genre">
+                  <div>
+                      <p className="small">watch time</p>
+                      <p className="big">{this.state.time} min</p>
+                    </div>
+                  </div>
+                  <div className="movies_count">
+                    <div>
+                      <p className="small">movies</p>
+                      <p className="big">#{this.state.internet.length}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-          </div>
-          <div className="selection_div">
+             </div>
+            <div className="selection_div">
             <div>
-            <SelectField
-                floatingLabelText=" t a g s"
-                value={this.state.value}
-                floatingLabelStyle={{
-                  color:"#962A38"          
-                }}
-                listStyle={{
-                  background:"#962A38",          
-                }}
-            >
-
-                  <MenuItem 
-                    value={-1} 
-                    primaryText="all" 
-                    onClick={() =>this.handleFilter("all")}
-                    />
-                  {
-                    this.state.tags === undefined ? "" :
-                  this.state.tags.map( (tag , index)  =>
-                  {
-                      return <MenuItem 
-                                key={index} 
-                                value={index} 
-                                primaryText={tag} 
-                                onClick={() =>this.handleFilter(tag)}
-                                />
-                    })
-                  }
-
-            </SelectField>
-            </div>
-          </div>
-          <div className="tabs">
-             <div className="mymovies">
-             <div className={this.state.isLoaderOn ? "loader showing" :"loader hiding"}>
-                 <img src={loader} alt="loader"  />
-               </div>
+              <SelectField
+                  floatingLabelText=" t a g s"
+                  value={this.state.value}
+                  floatingLabelStyle={{
+                    color:"#962A38"          
+                  }}
+                  listStyle={{
+                    background:"#962A38",          
+                  }}
+              >
+  
+                    <MenuItem 
+                      value={-1} 
+                      primaryText="all" 
+                      onClick={() =>this.handleFilter("all")}
+                      />
                     {
-                      this.state.internet.map(movie =>
-                      {
-                        return        <div 
-                                            key={movie.id}
-                                            className="box1" 
-                                            draggable
-                                            onDragStart ={(e ) => this.onDragStart(e)}
-                                            title= {movie.title}
-                                            onDragOver = { (e) => this.onDragOver(e)}
-                                            >
-                                            <img src={`http://image.tmdb.org/t/p/w185/${movie.path}`} id={movie.id} title={movie.title} className="movie_poster" alt="poster"/>
-                                            <div className="stars" >
-                                              <StarRatingComponent                                               
-                                                name={movie.firebase_id} 
-                                                starCount={5}
-                                                value={movie.stars}
-                                                onStarClick={this.onStarClick.bind(this)}
-                                                starColor="#962A38"
-                                                editing={true}
-                                                />
-                                              
-                                              <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id={movie.firebase_id} title={movie.title} onClick={(e) =>this.addComments(e , movie.comments)}>Comments</button>
-                                            </div>
-                                            <p className="tag_text">tag: {movie.tag}</p>
-                                            <div className="delete_movie">
-                                              <IconButton 
-                                              onClick={(e)=>this.mobile_delete(e)} 
-                                              >
-                                                <FontIcon id={movie.id}color="#962A38" className="material-icons ">
-                                                    delete
-                                                </FontIcon>
-                                                
-                                              </IconButton>
-                                               </div>
-                                            <div className="tag_button">
-                                                <RaisedButton
-                                                    id={movie.title}
-                                                    onClick={(event) =>this.handleClick(event , movie.firebase_id)}
-                                                    label="tags +"
-                                                    buttonStyle={{
-                                                    background:"#962A38"
-                                                    }}
-                                                  />
-                                              
-                                                  <Popover
-                                                    open={this.state.open}
-                                                    anchorEl={this.state.anchorEl}
-                                                    anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                    onRequestClose={this.handleRequestClose}
-                                                    animated={true}
-                                                    style={{
-                                                      background:"#962A38"
-                                                    }}
-
-                                                  >
-                                                  <p className="tag_list"> List of tags</p>
-                                                  <Divider key={movie.firebase_id} />
-                                                    <Menu
-                                                      disableAutoFocus={true}
-
-                                                    >
-                                                    <MenuItem  primaryText="all" onClick={() => this.handleListTag("all")}/>
-                                                      {
-                                                        this.state.tags.map( (tag , index) =>
-                                                        {
-                                                          return <MenuItem key={index} primaryText={tag} onClick={() => this.handleListTag(tag)}/>
-                                                        })
-                                                      }
-                                                    </Menu>
-                                                    <Divider key={movie.id} />
-                                                    <TextField
-                                                      floatingLabelText="add a new tag . . ."
-                                                      floatingLabelStyle={styles.floatingLabelStyle}
-                                                      floatingLabelFocusStyle={styles.tagFocusStyle}
-                                                      underlineFocusStyle={styles.tagFocusStyle}
-                                                      inputStyle={styles.tagFocusStyle}
-                                                      onChange = {this.handleTagInput}
-                                                      
-                                                    />
-                                                     <button type="button" className="btn add_tag_button"  onClick={(e) =>this.handleTagClick(e)}>a d d</button>
-                                                     
-                                                  </Popover>
-                                                </div>
-                                       </div>
+                      this.state.tags === undefined ? "" :
+                    this.state.tags.map( (tag , index)  =>
+                    {
+                        return <MenuItem 
+                                  key={index} 
+                                  value={index} 
+                                  primaryText={tag} 
+                                  onClick={() =>this.handleFilter(tag)}
+                                  />
                       })
                     }
-
-
-                    </div>
-          </div>
-          <div
-           className="trash"
-           onDragOver = { (e) => this.onDragOver(e)}
-           onDrop = { (e) => this.onDrop( e)}
-           >
-                    <div>
-                      <FontAwesome
-                        className="far fa-trash-alt"
-                        size="2x"
-                        name="trash"
-                      />
-                    </div>
-          </div>
-          <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="exampleModalLabel">  {this.state.modal_title}</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                {
-                  this.state.modal_comments.map( (comment , index)=>
+  
+              </SelectField>
+              </div>
+            </div>
+            <div className="tabs">
+               <div className="mymovies">
+                 <div className={this.state.isLoaderOn ? "loader showing" :"loader hiding"}>
+                   <img src={loader} alt="loader"  />
+                 </div>
                   {
-                    return <div className={index === 0   ? " none " : "comment_boxes block"} key={index} >
-                             <p >{comment}</p>
-                             <div className="trash_icon">
-                               <IconButton 
-                                 onClick={(e)=>this.commentTrash(e)} 
-                                 id={index}
-                                 >
-                                    <FontIcon id={index} color="#962A38" className="material-icons ">
-                                        delete
-                                    </FontIcon>                    
-                                 </IconButton>
-                              </div>
-                             {/* <button  className={index === 0 ? " none " : " trash_icon block  "} id={index} onClick={(e) => this.commentTrash(e)}>
-                                <FontAwesome
-                                    className="far fa-trash-alt"
-                                    name="comment_trash"
-                                    id={index} 
-                                  />
-                             </button> */}
-                            </div>
-                  })
-                }
-                  
+                    this.state.internet.map(movie =>
+                      {
+                         return       <div 
+                                        key={movie.id}
+                                        className="box1" 
+                                        draggable
+                                        onDragStart ={(e ) => this.onDragStart(e)}
+                                        title= {movie.title}
+                                        onDragOver = { (e) => this.onDragOver(e)}
+                                        >
+                                        <img src={`http://image.tmdb.org/t/p/w185/${movie.path}`} id={movie.id} title={movie.title} className="movie_poster" alt="poster"/>
+                                        <div className="stars" >
+                                          <StarRatingComponent                                               
+                                            name={movie.firebase_id} 
+                                            starCount={5}
+                                            value={movie.stars}
+                                            onStarClick={this.onStarClick.bind(this)}
+                                            starColor="#962A38"
+                                            editing={true}
+                                            />                                              
+                                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id={movie.firebase_id} title={movie.title} onClick={(e) =>this.addComments(e , movie.comments)}>Comments</button>
+                                        </div>
+                                        <p className="tag_text">tag: {movie.tag}</p>
+                                        <div className="delete_movie">
+                                          <IconButton 
+                                            onClick={(e)=>this.mobile_delete(e)} 
+                                          >
+                                            <FontIcon id={movie.id}color="#962A38" className="material-icons ">
+                                                delete
+                                            </FontIcon>      
+                                          </IconButton>
+                                        </div>
+                                        <div className="tag_button">
+                                          <RaisedButton
+                                            id={movie.title}
+                                            onClick={(event) =>this.handleClick(event , movie.firebase_id)}
+                                            label="tags +"
+                                            buttonStyle={{
+                                              background:"#962A38"
+                                            }}
+                                          />                                              
+                                            <Popover
+                                              open={this.state.open}
+                                              anchorEl={this.state.anchorEl}
+                                              anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                                              targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                              onRequestClose={this.handleRequestClose}
+                                              animated={true}
+                                              style={{
+                                                background:"#962A38"
+                                              }}
+                                            >
+                                              <p className="tag_list"> List of tags</p>
+                                              <Divider key={movie.firebase_id} />
+                                              <Menu
+                                                disableAutoFocus={true}
+                                              >
+                                                <MenuItem  primaryText="all" onClick={() => this.handleListTag("all")}/>
+                                                  {
+                                                    this.state.tags.map( (tag , index) =>
+                                                      {
+                                                        return <MenuItem key={index} primaryText={tag} onClick={() => this.handleListTag(tag)}/>
+                                                      })
+                                                  }
+                                              </Menu>
+                                              <Divider key={movie.id} />
+                                              <TextField
+                                                floatingLabelText="add a new tag . . ."
+                                                floatingLabelStyle={styles.floatingLabelStyle}
+                                                floatingLabelFocusStyle={styles.tagFocusStyle}
+                                                underlineFocusStyle={styles.tagFocusStyle}
+                                                inputStyle={styles.tagFocusStyle}
+                                                onChange = {this.handleTagInput}            
+                                              />
+                                              <button type="button" className="btn add_tag_button"  onClick={(e) =>this.handleTagClick(e)}>a d d</button>           
+                                              </Popover>
+                                          </div>
+                                        </div>
+                        })
+                      }
+  
+  
+                  </div>
                 </div>
-                <div className="modal-footer">
-                 <div className="modal_form">
-                    <TextField
-                        floatingLabelText=" add a comment . . . "  
-                        floatingLabelStyle={styles.floatingLabelStyle}
-                        floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
-                        underlineFocusStyle={styles.floatingLabelStyle}
-                        inputStyle={styles.floatingLabelFocusStyle}
-                        onChange = {this.handleCommentInput}
-                      />
-                      <div className="modal_buttons">
-                        <RaisedButton label="e x i t" data-dismiss="modal"  backgroundColor="#962A38"/>
-                        <RaisedButton label="a d d"  onClick={this.saveComment} buttonStyle={styles.add} data-dismiss="modal" backgroundColor="#141414" labelStyle={styles.white}/>
-                      </div>
+            <div
+             className="trash"
+             onDragOver = { (e) => this.onDragOver(e)}
+             onDrop = { (e) => this.onDrop( e)}
+             >
+              <div>
+                <FontAwesome
+                  className="far fa-trash-alt"
+                  size="2x"
+                  name="trash"
+                />
+              </div>
+            </div>
+            <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">  {this.state.modal_title}</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                  {
+                    this.state.modal_comments.map( (comment , index)=>
+                    {
+                      return <div className={index === 0   ? " none " : "comment_boxes block"} key={index} >
+                               <p >{comment}</p>
+                               <div className="trash_icon">
+                                 <IconButton 
+                                   onClick={(e)=>this.commentTrash(e)} 
+                                   id={index}
+                                   >
+                                      <FontIcon id={index} color="#962A38" className="material-icons ">
+                                          delete
+                                      </FontIcon>                    
+                                   </IconButton>
+                                </div>
+                              </div>
+                    })
+                  }
+                    
+                  </div>
+                  <div className="modal-footer">
+                   <div className="modal_form">
+                      <TextField
+                          floatingLabelText=" add a comment . . . "  
+                          floatingLabelStyle={styles.floatingLabelStyle}
+                          floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+                          underlineFocusStyle={styles.floatingLabelStyle}
+                          inputStyle={styles.floatingLabelFocusStyle}
+                          onChange = {this.handleCommentInput}
+                        />
+                        <div className="modal_buttons">
+                          <RaisedButton label="e x i t" data-dismiss="modal"  backgroundColor="#962A38"/>
+                          <RaisedButton label="a d d"  onClick={this.saveComment} buttonStyle={styles.add} data-dismiss="modal" backgroundColor="#141414" labelStyle={styles.white}/>
+                        </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+        </div>
+      );
+
+    }
+    else
+    {
+      return(
+        <div className="error_screen">
+          <div className="back_button">
+              <Link to="/results"><img src={image} alt="arrow" /></Link>
           </div>
-</div>
-    );
+          <div className="error_message">
+              <h1>There is a problem with your search , please try again </h1>
+          </div>
+        </div>
+      );
+
+    }
+    
+
   }
 }
 

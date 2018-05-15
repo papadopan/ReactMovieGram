@@ -5,6 +5,8 @@ import ranking from '../../assets/star.png'
 import cost from '../../assets/dollar-symbol.png'
 import Coverflow from 'react-coverflow'
 import { StyleRoot } from 'radium'
+import image from '../../assets/logo3.png'
+import { Link } from 'react-router-dom'
 
 
 class MovieView extends Component
@@ -23,17 +25,20 @@ class MovieView extends Component
             vote:'',
             image:'',
             similar:[],
-            recommended :[]
+            recommended :[],
+            isLoaderOn:false,
+            error:false
         }
     }
 
 
     componentDidMount()
     {
+        this.setState({isLoaderOn:true})
         this.fetchMovieDetails();
         this.fetchRecommended(); 
     }
-
+    //fetch movie details based on the id of the movie
     fetchMovieDetails()
     {
         fetch('https://api.themoviedb.org/3/movie/' + this.props.match.params.movieID + '?api_key=f35de773b53c4803aa0d72b2f16794f4&language=en-US')
@@ -47,25 +52,28 @@ class MovieView extends Component
             revenue: response.revenue,
             runtime:response.runtime,
             vote: response.vote_average,
-            image: "http://image.tmdb.org/t/p/w185//"+response.poster_path
+            image: "http://image.tmdb.org/t/p/w185//"+response.poster_path,
+            isLoaderOn:false
             
         }))
-        .catch( () => console.log("error"))
+        .catch( () => this.setState({error:true}))
     }
-
+    //fetch recommended movies of this specific movie
     fetchRecommended()
     {
         fetch('https://api.themoviedb.org/3/movie/' + this.props.match.params.movieID + '/recommendations?api_key=f35de773b53c4803aa0d72b2f16794f4&language=en-US&page=1')
         .then( response => response.json())
         .then( response =>  this.setState({
-            recommended : response.results
+            recommended : response.results,
+            isLoaderOn:false
         }))
-        .catch( () => console.log("error"))
+        .catch( () => this.setState({error:true}))
     }
 
     render()
     {
-
+        if( !this.state.error)
+        {
         return(
             <div>
                 <div className="movie_container">
@@ -165,6 +173,25 @@ class MovieView extends Component
                 </div>
             </div>
         );
+        }
+        else{
+            return(
+                <div className="error_screen">
+      
+                  <div className="back_button">
+                    <div>  
+                      <Link to="/results"><img className="home_image" src={image} alt="arrow" /></Link>
+                    </div>
+                  </div>
+      
+                 <div className="error_message">
+                    <h1>There is a problem with your search , please try again  </h1>
+                  </div>
+      
+                </div>
+            );
+
+        }
     }
 
 }
