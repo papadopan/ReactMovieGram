@@ -189,7 +189,7 @@ onDrop = (e) =>
 {
   e.preventDefault();
   this.props.deleted_id(this.state.transfer_id)
-  this.setState({isLoaderOn:true})
+  
   
 }
 //updates the star rating of the movie
