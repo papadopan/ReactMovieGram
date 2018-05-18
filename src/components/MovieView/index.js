@@ -7,6 +7,7 @@ import Coverflow from 'react-coverflow'
 import { StyleRoot } from 'radium'
 import image from '../../assets/logo3.png'
 import { Link } from 'react-router-dom'
+import loader from "../../assets/loader.gif"
 
 
 class MovieView extends Component
@@ -83,6 +84,12 @@ class MovieView extends Component
                          </div>
                      </div>
 
+                    <div className={this.state.isLoaderOn ? "loader showing" :"loader hiding"}>
+                        <img src={loader} alt="loader"  />
+                    </div>
+
+
+
                     <div className="movie_header">
 
                         <div className="movie_poster">
@@ -100,6 +107,7 @@ class MovieView extends Component
                     </div>
 
                     <div className="movie_stats">
+  
 
                         <div className="movie_minutes">
 

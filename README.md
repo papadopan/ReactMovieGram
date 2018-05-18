@@ -10,11 +10,15 @@ The initial thought was to create a similar service as instagram, but for movies
 * Users can also search any actor they want, and find out interesting infomation about them 
 * Users can select a movie and go through the details of the movie such as, release date, duration, ranking, budget, description of the movie, and finaly recommended movies based on their movie selection.
 * This service provides an opportunity  to save the movies they already have seen and the service will provide them with stats about their preferences
-* Users can also interact with the movies in their profile
+* Users can also interact with the movies in their profile:
     *   There is a star rating system, and users can give the score they prefer in every movie
-    *   They can save comments to every movie, in order to save something important for them 
-    *   Users can create their own lists. Every movie initialy has a tag with assigned value  `all`. Users can         create their own tags , and then they can go to every movie they want to add to their list and change the      tag of the movie. Users can create as many lists they want. In addition , on the top of the screen there is a filtering mechanism, so when the users want to see only one list, they can select the tag they want.
-    *   When the users want to delete, one movie from their profile there is the bin area on the bottom of the         screen that they can actually drag and drop any movie they want. When they drop the movie, it will be           deleted. 
+
+    *   They can add (and of course delete) comments to every movie, in order to save something important for them 
+
+    * Users can create their own lists from the movies in their profile. Every movie initialy has a tag with assigned value `all`. When the users want to create a list practically, they can create a new tag. And then they can go through the movies they want to add to this list/tag and change their tag value. In addition , on the top of the screen there is a filtering mechanism, so when the users want to see only one list, they can select the tag they want. When the users delete all the movie from a specific tag , this tag is automatically deleted too.
+  
+
+    *   When the users want to delete, one movie from their profile there is the bin area on the bottom of the         screen that they can actually drag and drop any movie they want. When they drop the movie, it will be           deleted. In order to keep this mechanism availabla for smaller screens where the drag and drop functionality is  not always feasible, we created a new rubbish icon in the movie box, which the users can click when they   want to delete this specific movie.
 
 ## Technologies 
 * HTML , CSS , JavaScript (React)
@@ -33,6 +37,7 @@ The initial thought was to create a similar service as instagram, but for movies
 
 ## Heroku deploy 
 The website is accesible through Heroku from this link 
+[MovieGram](https://instamovies.herokuapp.com/)
 
 
 
