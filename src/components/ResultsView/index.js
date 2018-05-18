@@ -265,10 +265,11 @@ render()
                                   <p>{movies.title}({movies.date})</p>
                                 </div>
                                 <IconButton 
-                                  onClick={this.ButtonHandle}  
+                                  onClick={(e) => this.ButtonHandle(e)}  
                                   className="favourite"
                                   style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}
                                 >
+                                
                                   <FontIcon id={movies.id} className="material-icons "  color = { this.props.mymovies.includes(movies.id) ? "#962A38" : "#FFF"}>
                                     favorite
                                   </FontIcon>      

@@ -8,6 +8,7 @@ The initial thought was to create a similar service as instagram, but for movies
 * It is an online platform for movies
 * Users can search their movies based on the genre, title, or category ( top rated , latest, upcoming ). 
 * Users can also search any actor they want, and find out interesting infomation about them 
+* Users can favourite one movie , by clicking the heart icon in the bottom of every movie box. If the color of the heart is red it means that it is added to the profile, if it is white it means that it is not in the profile. 
 * Users can select a movie and go through the details of the movie such as, release date, duration, ranking, budget, description of the movie, and finaly recommended movies based on their movie selection.
 * This service provides an opportunity  to save the movies they already have seen and the service will provide them with stats about their preferences
 * Users can also interact with the movies in their profile:
