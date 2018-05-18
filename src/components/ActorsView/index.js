@@ -39,7 +39,8 @@ class ActorsView extends Component{
         {
           title : `${known_movies.original_title}`,
           date : `${known_movies.release_date}`,
-          image: `http://image.tmdb.org/t/p/w185//${known_movies.poster_path}`
+          image: `http://image.tmdb.org/t/p/w185//${known_movies.poster_path}`,
+          id: `${known_movies.id}`
         }
       )))
       .then(data=> this.setState({
@@ -112,13 +113,16 @@ class ActorsView extends Component{
                 this.state.known.map(movies=>
                 {
                   return      <div key={movies.title} className="box">
+                                <Link to={`movie/${movies.id}`}>
                                   <img src={movies.image} alt="movie"/>
+                                  
                                   <div className="overlay">
                                     <div>
                                       <p className="overlay_title">{movies.title}</p>
                                       <p className="overlay_date"> {movies.date}</p>
                                     </div>
                                   </div>
+                                  </Link>
                                 </div>
                 })
               }
