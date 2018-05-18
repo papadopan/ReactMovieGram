@@ -77,6 +77,11 @@ class MovieView extends Component
         return(
             <div>
                 <div className="movie_container">
+                     <div className="back_button">
+                         <div>
+                            <Link to="/results"><img src={image} className="home_image" alt="arrow"/></Link>
+                         </div>
+                     </div>
 
                     <div className="movie_header">
 

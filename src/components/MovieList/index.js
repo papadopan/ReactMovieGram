@@ -116,7 +116,7 @@ class MovieList extends Component{
           <div className="wrapper">
             <div className="search_header">
               <Link to="/results"><img src={image} className="home_image" alt="arrow"/></Link>
-               <h1>movies about . . . {this.props.value}</h1>
+               <h1>movies about . . . {localStorage.getItem("movie-query")}</h1>
             </div>
            </div>
            <div className="results_list">
@@ -141,7 +141,7 @@ class MovieList extends Component{
                                 className="favourite"
                                 style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}
                               >
-                                <FontIcon id={movies.id} className="material-icons "  color = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
+                                <FontIcon id={movies.id} className="material-icons "  color = { this.props.mymovies.includes(movies.id) ? "#962A38" : "#FFF"}>
                                    favorite
                                 </FontIcon>            
                               </IconButton>

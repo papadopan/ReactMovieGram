@@ -269,7 +269,7 @@ render()
                                   className="favourite"
                                   style = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}
                                 >
-                                  <FontIcon id={movies.id} className="material-icons "  color = { this.props.mymovies.includes(movies.id) ? styles.success : styles.fail}>
+                                  <FontIcon id={movies.id} className="material-icons "  color = { this.props.mymovies.includes(movies.id) ? "#962A38" : "#FFF"}>
                                     favorite
                                   </FontIcon>      
                                 </IconButton>

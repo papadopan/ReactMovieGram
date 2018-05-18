@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 import TextField from 'material-ui/TextField'
 import profile from '../../../assets/user.png'
 
+
+
+
 class SearchMovie extends Component{
 
 //handling clicks
@@ -11,6 +14,7 @@ class SearchMovie extends Component{
   {
     this.props.onMovieChange( event.target.value)
   }
+
 
   render(){
     const styles = {
@@ -109,6 +113,7 @@ class SideBar extends Component{
     this.setState({movie:param});
     this.props.MovieQuery(param);
     localStorage.setItem("movie-query" , param)
+
   }
   handleActorQuery = (param) =>
   {
@@ -125,47 +130,48 @@ handleli = (e)=>{
   render()
   {
 
-    return(
-      <div className={this.props.showing ? "sidenavbar move" : "sidenavbar"}>
-        <div className="myprofile">
-        <Link to="/profile">
-            <img src={profile} alt="profile" />
-            <p className="profile_text">my profile</p>
-            </Link>
-        </div>
-        <hr/>
-        <div className="searches">
-          <div className="form-group">
-            <p className="profile_text">I am interested in</p>
-          <div className="dropdown">
-            <button className="btn  dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span className="profile_text">{this.state.dropdown}</span>
-              <span className="caret profile_text"></span>
-            </button>
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
-              {
-                this.state.genres.map(movie=>{
-                  return <li key = {movie.name}  onClick={this.handleli}> <Link to="/searchresults" className ={movie.name} id={movie.id}>{movie.name}</Link> </li>
-                   })
-              }
-            </ul>
+      return(
+        <div className={this.props.showing ? "sidenavbar move" : "sidenavbar"}>
+          <div className="myprofile">
+          <Link to="/profile">
+              <img src={profile} alt="profile" />
+              <p className="profile_text">my profile</p>
+              </Link>
+          </div>
+          <hr/>
+          <div className="searches">
+            <div className="form-group">
+              <p className="profile_text">I am interested in</p>
+            <div className="dropdown">
+              <button className="btn  dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <span className="profile_text">{this.state.dropdown}</span>
+                <span className="caret profile_text"></span>
+              </button>
+              <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
+                {
+                  this.state.genres.map(movie=>{
+                    return <li key = {movie.name}  onClick={this.handleli}> <Link to="/searchresults" className ={movie.name} id={movie.id}>{movie.name}</Link> </li>
+                     })
+                }
+              </ul>
+              </div>
             </div>
           </div>
+          <div className="searches">
+              <SearchMovie
+                placeholder={"Search movies . . ." }
+                onMovieChange= {this.handleMovieQuery}
+                  />
+          </div>
+          <div className="searches">
+              <SearchActor
+              placeholder={"Search actor . . . "}
+              onActorChange= {this.handleActorQuery}
+            
+              />
+          </div>
         </div>
-        <div className="searches">
-            <SearchMovie
-              placeholder={"Search movies . . ." }
-              onMovieChange= {this.handleMovieQuery}
-                />
-        </div>
-        <div className="searches">
-            <SearchActor
-            placeholder={"Search actor . . . "}
-            onActorChange= {this.handleActorQuery}
-            />
-        </div>
-      </div>
-    );
+      );
   }
 }
 

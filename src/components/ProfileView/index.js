@@ -214,6 +214,7 @@ handleCommentInput = (e)=>
     new_comment : e.target.value
   })
 }
+
 //saves the comment for the movie
 saveComment = () =>
 {
@@ -366,6 +367,11 @@ mobile_delete = (e) =>
     {
       return (
         <div className="personal">
+             <div className="back_button">
+               <div>
+               <Link to="/results"><img src={image} className="home_image" alt="arrow"/></Link>
+              </div>
+            </div>
             <div className="timeline">          
                 <div className="timeline_title">
                   <p>My Profile</p>
@@ -504,7 +510,7 @@ mobile_delete = (e) =>
                                                 floatingLabelFocusStyle={styles.tagFocusStyle}
                                                 underlineFocusStyle={styles.tagFocusStyle}
                                                 inputStyle={styles.tagFocusStyle}
-                                                onChange = {this.handleTagInput}            
+                                                onChange = {this.handleTagInput}          
                                               />
                                               <button type="button" className="btn add_tag_button"  onClick={(e) =>this.handleTagClick(e)}>a d d</button>           
                                               </Popover>
@@ -571,7 +577,7 @@ mobile_delete = (e) =>
                         />
                         <div className="modal_buttons">
                           <RaisedButton label="e x i t" data-dismiss="modal"  backgroundColor="#962A38"/>
-                          <RaisedButton label="a d d"  onClick={this.saveComment} buttonStyle={styles.add} data-dismiss="modal" backgroundColor="#141414" labelStyle={styles.white}/>
+                          <RaisedButton label="a d d"  onClick={this.saveComment}  buttonStyle={styles.add} data-dismiss="modal" backgroundColor="#141414" labelStyle={styles.white}/>
                         </div>
                     </div>
                   </div>

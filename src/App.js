@@ -118,7 +118,7 @@ updateActor = (param) =>
 updateMovie = (param) =>
 {
   this.setState({movie_query:param})
-  this.fetchActorid(param)
+  // this.fetchActorid(param)
   // localStorage.setItem("actor-id" , this.state.actor_id)
   // console.log(localStorage.getItem("actor-id"))
 }
