@@ -448,7 +448,9 @@ mobile_delete = (e) =>
                                         title= {movie.title}
                                         onDragOver = { (e) => this.onDragOver(e)}
                                         >
+                                        <Link to={`movie/${movie.id}`}>
                                         <img src={`http://image.tmdb.org/t/p/w185/${movie.path}`} id={movie.id} title={movie.title} className="movie_poster" alt="poster"/>
+                                        </Link>
                                         <div className="stars" >
                                           <StarRatingComponent                                               
                                             name={movie.firebase_id} 

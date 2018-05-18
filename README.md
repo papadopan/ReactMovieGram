@@ -35,6 +35,9 @@ The initial thought was to create a similar service as instagram, but for movies
 * When the users search for an Actor the ActorsView is the component that will display the results
 * When the users want to check their profile the ProfileView is the responsible one
 
+## Set up
+ * You can clone the repo, we uploaded also the node_modules folder ( we did that just to be sure because in the mid-project review we faced some problems when the students tried to install the packages) and then from terminal you can run ` npm start` inside the folder in order to run the project localy.
+
 ## Heroku deploy 
 The website is accesible through Heroku from this link 
 [MovieGram](https://instamovies.herokuapp.com/)
